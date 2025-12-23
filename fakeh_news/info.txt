@@ -1,0 +1,39 @@
+----------INFO----------------
+
+#Naive Bayes + Laplace Smoothing
+
+P(c|d) = P(d|c)+P(c) / P(d)
+
+> P(c|d) -> POSTERIOR | OUTPUT | prediction(fake or reyal)
+        -> PROBABILY AFTER SEEING THE DATA
+        -> how likely would the data(word) appear in the dataset(fake and real dataset)
+
+> P(c) -> PRIOR
+        ->NUMBER OF DOCS (FILES?) IN A CLASS
+        prior probability of the class (e.g., proportion of real vs fake docs)
+        ->PROBABILITY BEFORE WE LOOK AT SPECIFIC WORD IN A CLASS (count of docs in class / 100)
+
+> P(d|c) -> LIKELIHOOD
+            -> PROBABILITY ODF A WORD IN A CLASS
+            -> EX. IS THE WORD "NEWS" IN TRAINED DATA CLASS real
+                ->the probability of seeing a word given that the document belongs to this class
+> P(d) -> Evidence/Normalizer
+        -> vocab count + the word count in the class
+
+
+
+
+link:
+https://github.com/Webhose
+https://github.com/aaroncarlfernandez/Philippine-Fake-News-Corpus/blob/master/Philippine%20Fake%20News%20Corpus.zip
+
+
+https://huggingface.co/datasets/SEACrowd/ph_fake_news_corpus
+
+
+
+
+===================================================================
+to run :
+
+python main.py

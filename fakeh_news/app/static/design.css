@@ -1,0 +1,289 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    padding: 40px 20px;
+    min-height: 100vh;
+    background-color: #e8e9ea;
+}
+
+.title {
+    /* border: 1px green solid; */
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.title h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c2c2c;
+    letter-spacing: -0.02em;
+}
+
+.main {
+    /* border: 1px red solid; */
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 30px;
+    min-height: 500px;
+}
+
+
+/* LEFT SIDE */
+.left {
+    /* border: 1px brown solid; */
+    flex: 2;
+    background-color: #d4c5b0;
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+}
+
+.link-input {
+    width: 100%;
+    height: 50px;
+    border: 2px dashed #a89580;
+    border-radius: 12px;
+    padding: 0 15px;
+    background: transparent;
+    font-size: 14px;
+    color: #5c5c5c;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.link-input::placeholder {
+    color: #a89580;
+}
+
+.link-input:hover {
+    border-color: solid;
+    border-color: #958570;
+    box-shadow: 0 0 0 2px rgba(149, 133, 112, 0.2);
+}
+
+.text-input {
+    flex: 1;
+    background-color: #e8ddd0;
+    border-radius: 12px;
+    border: none;
+    padding: 20px;
+    min-height: 300px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 14px;
+    color: #5c5c5c;
+    outline: none;
+    transition: all 0.3s ease;
+    line-height: 1.5;
+}
+
+.text-input::placeholder {
+    color: #a89580;
+}
+
+.text-input:focus {
+    box-shadow: 0 0 0 2px rgba(138, 125, 107, 0.3);
+}
+
+.controls {
+    /* border: 1px white solid; */
+    display: flex;
+    justify-content: end;
+    gap: 3%;
+}
+
+.clear-button {
+    align-self: flex-end;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.check-button {
+    align-self: flex-end;
+    background-color: #3c3c3c;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.clear-button:hover {
+    background-color: #2c2c2c;
+    transform: translate(-2px);
+}
+
+.check-button:hover {
+    background-color: #2c2c2c;
+    transform: translate(-2px);
+}
+
+
+/* RIGHT SIDE */
+
+.right {
+    flex: 1;
+    background-color: #3c4043;
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.result {
+    flex: 1;
+    background-color: #e8e9ea;
+ 
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 250px;
+    overflow-y: auto;
+}
+
+.result::before {
+    content: "RESULT";
+    
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+}
+
+.prediction-result {
+    text-align: center;
+}
+
+.prediction-result h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.prediction-result.real-news h3 {
+    color: #27ae60;
+}
+
+.prediction-result.fake-news h3 {
+    color: #e74c3c;
+}
+
+.prediction-result p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.result pre {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #333;
+    overflow: auto;
+    max-width: 100%;
+}
+
+/* BOTS BUTTON */
+
+.connectBOT {
+    background-color: #e8e9ea;
+    border-radius: 12px;
+    padding: 10px;
+    position: relative;
+    min-height: 80px;
+    flex-direction: column;
+    display: flex;
+    gap: 10px;
+}
+
+.connecttext {
+    display: flex;
+    justify-content: center;
+}
+
+.bot-buttons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.bot-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2 ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bot-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.telegram {
+    background-color: #ffd700;
+}
+
+.discord {
+    background-color: #5865f2;
+}
+
+
+@media (max-width: 768px) {
+    .main {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .title h1 {
+        font-size: 2rem;
+    }
+
+    body {
+        padding: 20px 15px;
+    }
+}

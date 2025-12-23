@@ -1,0 +1,176 @@
+<!-- RUN IN APP FOLDER: fastapi dev main.py --port 8000 --reload -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Fake News Prediction</title>
+    <link rel="stylesheet" href="static/design.css">
+</head>
+
+<body>
+    <div class="title">
+        <h1>Fake News Predictor</h1>
+    </div>
+
+    <div class="main">
+        <div class="left">
+            <form id="predictForm" class="form" autocomplete="off">
+                <input type="url" class="link-input" id="linkInput" placeholder="Paste link here">
+                <textarea class="text-input" id="textInput" placeholder="Enter text here"></textarea>
+                <div class="controls">
+                    <button type="button" class="clear-button" id="clearBtn">CLEAR</button>
+                    <button type="submit" class="check-button">CHECK</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="right">
+            <div class="result" id="result">
+            </div>
+
+            <div class="connectBOT">
+                <p class="connecttext">Connect with our Bots:</p>
+                <div class="bot-buttons">
+                    <a href="https://t.me/fakenewz_detector_bot" target="_blank" class="bot-button telegram"
+                        title="Connect to Telegram">
+                        Telegram
+                    </a>
+
+                    <a href="https://discord.com/oauth2/authorize?client_id=1416703692626853951&permissions=292326337600&integration_type=0&scope=bot" target="_blank" class="bot-button discord"
+                        title="Connect to Discord">
+                        Discord
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // IDS
+        const linkEl = document.getElementById("linkInput");
+        const textEl = document.getElementById("textInput");
+        const resultDiv = document.getElementById("result");
+        const clearBtn = document.getElementById("clearBtn");
+        const form = document.getElementById("predictForm");
+
+        // disable link or text input if meron input yung isa sa knila
+        linkEl.addEventListener("input", () => {
+            if (linkEl.value.trim()) {
+                textEl.value = "";
+                textEl.disabled = true;
+            } else {
+                textEl.disabled = false;
+            }
+        });
+
+        textEl.addEventListener("input", () => {
+            if (textEl.value.trim()) {
+                linkEl.value = "";
+                linkEl.disabled = true;
+            } else {
+                linkEl.disabled = false;
+            }
+        });
+
+        // CLEAR BUTTON
+        clearBtn.addEventListener("click", () => {
+            linkEl.value = "";
+            textEl.value = "";
+            linkEl.disabled = false;
+            textEl.disabled = false;
+            resultDiv.innerHTML = "";
+        });
+
+
+        // SUBMIT FORM
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const linkVal = linkEl.value.trim();
+            let textVal = textEl.value.trim();
+
+            if (!linkVal && !textVal) {
+                resultDiv.innerHTML = '<p style="color: #e74c3c; text-align: center;">Please enter some text or a link.</p>';
+                return
+            }
+
+            // SCRAPE IF LINK
+            if (linkVal) {
+                console.log("LINK:", linkVal);
+                resultDiv.innerHTML = '<p style="color: #666; text-align: center;">Scraping link...</p>';
+
+                try {
+                    const extractResponse = await fetch(`/api/v1/extract?url=${encodeURIComponent(linkVal)}`);
+
+                    if (!extractResponse.ok) {
+                        throw new Error(`Scraper error: ${extractResp.status}`);
+                    }
+                    const extractData = await extractResponse.json();
+
+
+                    if (extractData.original && extractData.original.body) {
+                        textVal = extractData.original.body;
+                        textEl.value = textVal; // LAGAY SCRAPE TEXT SA TEXT AREA
+                    } else {
+                        resultDiv.innerHTML = '<p style="color: #e74c3c; text-align: center;">Failed to extract article content.</p>';
+                        return;
+                    }
+                } catch (err) {
+                    console.log("Error:", err)
+                    resultDiv.innerHTML = `<p style="color: #e74c3c; text-align: center;">Scraper failed: ${err.message}</p>`;
+                    return;
+                }
+            }
+
+            resultDiv.innerHTML = '<p style="color: #666; text-align: center;">Analyzing...</p>';
+
+
+            try {
+                const response = await fetch("/api/v1/predict", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text: textVal, link: linkVal})
+                });
+
+                if (!response.ok) {
+                    let errText;
+                    try { errText = await response.text(); } catch { errText = response.statusText; }
+                    throw new Error(`${response.status} ${errText}`);
+                }
+
+                const data = await response.json();
+
+
+                // RESULT (prediction class lang and pecentage)
+                console.log("DATA:", data)
+                if (data.prediction_class) {
+                    const predictionClass = data.prediction_class;
+                    const isReyal = predictionClass.toLowerCase() === "real";
+                    const percentage = isReyal ? data.real_percentage : data.fake_percentage;
+                    // console.log("PERCENTAGE:", percentage)
+                    const roundPercent = Math.round(percentage);
+                    const resultClass = isReyal ? "real-news" : "fake-news";
+
+                    resultDiv.innerHTML = `
+                        <div class="prediction-result ${resultClass}">
+                            <h3>${predictionClass.toUpperCase()} NEWS</h3>
+                            <p>${roundPercent}% confidence</p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<prev` + JSON.stringify(data, null, 2) + `</pre>`;
+                }
+            } catch (error) {
+                console.log("Error:", error);
+                resultDiv.innerHTML = `<p style="color: #e74c3c; text-align: center;">Error: ${error.message}</p>`;
+
+            }
+        })
+    </script>
+
+</body>
+
+</html>
