@@ -1,0 +1,31 @@
+tech: fastapi or flask, javascript, html, CSS, reddit api
+
+1. text processesing/ cleaning
+    >text extraction
+    >normalization
+    >ngram
+    >Negation handling
+    >multi Words
+    >stop words
+
+2.Tokenization
+    
+    
+3. Features processesing
+    > Bag of Words
+    
+    
+    
+4. Model/ training
+    
+    >Train using Naive Bayes
+    > save the probability of each token
+    > pickle the dataset
+    >test
+
+5. Classification
+    > open the link(extract the text)(if the user input is a link)
+    >preprocess the user input(text/doc)
+    >data.get(token, token)(get the probability of the token from the trained data)
+
+

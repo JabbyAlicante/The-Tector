@@ -1,0 +1,11 @@
+.venv/
+.env
+
+.utils/
+app/dataset/train.pkl
+app/dataset/test.pkl
+__pycache__/
+fastapisample.py
+discord.log
+app/src/files/trained_dataset.pkl
+temp/
