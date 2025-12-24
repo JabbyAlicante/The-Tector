@@ -20,6 +20,7 @@ P(c|d) = P(d|c)+P(c) / P(d)
 > P(d) -> Evidence/Normalizer
         -> vocab count + the word count in the class
 
+        hay
 
 
 
