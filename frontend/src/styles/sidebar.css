@@ -1,0 +1,44 @@
+.sidebar {
+  width: 140px;
+  background: #d8c690;
+  border: 4px solid #2a1e1e;
+  box-shadow: 6px 6px 0 #2a1e1e;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-content: center;
+  margin-left: 10rem;
+  /* border-radius: 30px; */
+  height: 50%;
+  width: 30%;
+  gap: 50px; 
+  /* padding-left: 0rem; */
+}
+
+.sidebar button {
+  font-family: 'Press Start 2P', monospace;
+  background: #c1662b;
+  border: 3px solid #2a1e1e;
+  padding: 10px 8px;
+  color: #ECE6C2;               
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 12px;
+  text-shadow: 1px 1px 0 #000; 
+  height: 70px;
+  display: flex;              
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 10px;      
+}
+
+
+.sidebar button:hover {
+  background: #e07a2f;
+}
+
+.sidebar button:active {
+  transform: translateY(2px);
+}

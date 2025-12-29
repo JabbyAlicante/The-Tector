@@ -1,0 +1,26 @@
+.mainpage {
+  display: flex;
+  height: calc(100vh - 80px);
+  box-sizing: border-box;
+  overflow: hidden;     
+  gap: 0px;              
+
+}
+
+.sidebar-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 100%; 
+  width: 20px;   
+}
+
+.content-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 100%;
+  width: 80px;   
+}
