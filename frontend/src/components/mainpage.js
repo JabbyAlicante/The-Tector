@@ -6,6 +6,12 @@ import { setupScanHandler } from "./scanHandler.js";
 export default function mainpage(root) {
   root.innerHTML = `
     <div class="mainpage">
+
+      <div class="sky">
+      <div class="cloud cloud1"></div>
+      <div class="cloud cloud2"></div>
+      <div class="cloud cloud3"></div>
+    </div>
       <section class="sidebar-section"></section>
       <section class="content-section"></section>
     </div>
@@ -16,4 +22,16 @@ export default function mainpage(root) {
 
   setupSidebarMode();
   setupScanHandler();
+
+  const sky = root.querySelector(".sky");
+  for (let i = 0; i < 10; i++) {
+    const cloud = document.createElement("div");
+    cloud.classList.add("cloud");
+    cloud.style.top = `${Math.random() * 80}vh`;
+    cloud.style.left = `${-Math.random() * 100}px`;
+    cloud.style.animationDuration = `${30 + Math.random() * 40}s`;
+    sky.appendChild(cloud);
+  }
+
+
 }

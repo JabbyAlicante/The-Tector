@@ -25,7 +25,7 @@
   border: 3px solid #2a1e1e;
   padding: 10px;
   font-family: monospace;
-  font-size: 12px;
+  font-size: 14px;
   outline: none;
 }
 
@@ -90,15 +90,6 @@
   color: #065f46;
 }
 
-.result-box.danger {
-  background: #9d0208;
-  color: #fff;
-  border-color: #6a040f;
-}
-
-.result-box.danger .result-text {
-  color: #fff;
-}
 
 .icons-integration {
   display: flex;

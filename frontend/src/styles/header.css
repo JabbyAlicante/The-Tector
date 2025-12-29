@@ -10,6 +10,10 @@
   box-shadow: inset 0 -3px 0 #b08968;
 }
 
+.spantitleh1 {
+  color: #c1662b;
+}
+
 .titleh1 {
   font-size: 22px;
   color: #3a2a2a;
@@ -20,7 +24,6 @@
   animation: flicker 2.5s infinite;
 }
 
-/* CRT scanlines */
 .header::after {
   content: "";
   position: absolute;
