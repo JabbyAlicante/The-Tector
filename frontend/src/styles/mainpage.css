@@ -1,0 +1,66 @@
+.mainpage {
+  display: flex;
+  height: calc(100vh - 80px);
+  box-sizing: border-box;
+  overflow: hidden;     
+  gap: 0px;
+  position: relative; 
+}
+
+.sidebar-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 100%; 
+  width: 20px;
+  position: relative;
+  z-index: 2; 
+}
+
+.content-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 100%;
+  width: 80px;
+  position: relative;
+  z-index: 2; 
+}
+
+.sky {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; 
+  overflow: hidden;
+
+}
+
+.cloud {
+  position: absolute;
+  width: 40px;
+  height: 20px;
+  background: white;
+  box-shadow:
+    10px 0 white,
+    20px 0 white,
+    10px -10px white,
+    20px -10px white;
+  border-radius: 0;
+  animation: float 40s linear infinite;
+  image-rendering: pixelated;
+}
+
+
+.cloud1 { top: 50px; left: -60px; animation-duration: 40s; }
+.cloud2 { top: 120px; left: -100px; animation-duration: 60s; }
+.cloud3 { top: 200px; left: -80px; animation-duration: 50s; }
+
+@keyframes float {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(120vw); }
+}

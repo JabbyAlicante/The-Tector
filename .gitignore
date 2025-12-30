@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+*.pkl
+*.pkl.sha256
+node_modules/
+dist/
+package-lock.json
+venv/

@@ -1,0 +1,139 @@
+.content-section {
+  flex: 1;
+  /* padding: 30px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 200px;
+}
+
+.contents {
+  background: #73BDA8;
+  border: 4px solid #2a1e1e;
+  padding: 20px;
+  width: 820px;
+  height: 550px;
+  box-shadow: 6px 6px 0 #2a1e1e;
+  position: relative;
+}
+
+.contents textarea {
+  width: 100%;
+  height: 220px;
+  resize: none;
+  background: #cfe9dd;
+  border: 3px solid #2a1e1e;
+  padding: 10px;
+  font-family: monospace;
+  font-size: 14px;
+  outline: none;
+}
+
+.detect-btn {
+  margin-top: 15px;
+  width: 100%;
+  background: #c1662b;
+  border: 3px solid #2a1e1e;
+  padding: 12px;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.detect-btn:hover {
+  background: #e07a2f;
+}
+
+.detect-btn:active {
+  transform: translateY(2px);
+}
+
+.alert {
+  margin-top: 12px;
+  padding: 10px;
+  border: 3px solid #6a040f;
+  background: #9d0208;
+  color: #fff;
+  text-align: center;
+  font-size: 10px;
+  text-shadow: 1px 1px 0 #000;
+  animation: blink 1s infinite;
+}
+
+.screen-title {
+  font-size: 12px;
+  margin-bottom: 12px;
+  color: #2a1e1e;
+  text-shadow: 1px 1px 0 #fff;
+}
+
+.result-box {
+  margin-top: 15px;
+  padding: 10px;
+  border: 3px solid #2a1e1e;
+  background: #cfe9dd;
+  font-size: 10px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.result-label {
+  color: #888;
+  margin-right: 6px;
+}
+
+.result-text {
+  font-weight: bold;
+  color: #065f46;
+}
+
+
+.icons-integration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.integration-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;               
+  width: 140px;
+  padding: 8px 10px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  text-decoration: none;
+  color: #fff;
+  border: 3px solid #2a1e1e;
+  background: #c1662b;       
+  text-shadow: 1px 1px 0 #fff; 
+  cursor: pointer;
+  border-radius: 6px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.integration-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #ff7f50, 0 0 15px #ff4500; 
+}
+
+.integration-btn i {
+  font-size: 18px; 
+}
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.96; }
+  100% { opacity: 1; }
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0.3; }
+}
