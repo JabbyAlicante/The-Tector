@@ -1,7 +1,7 @@
 
 # The-Tector: Fake News
 
-    ### To Run:
+##  To Run:
 
     1. cd fakeh_news/app
     2. python or python3 main.py
