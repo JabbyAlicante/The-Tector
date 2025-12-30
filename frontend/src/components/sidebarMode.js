@@ -3,8 +3,9 @@ import { setScanMode } from "./scanState.js";
 export function setupSidebarMode() {
   const buttons = document.querySelectorAll(".sidebar button");
   const textarea = document.getElementById("detectorInput");
+  const linkInput = document.getElementById("linkInput");
 
-  if (!textarea) return;
+  if (!textarea || !linkInput) return;
 
   buttons.forEach(btn => {
     btn.addEventListener("click", () => {
@@ -13,13 +14,16 @@ export function setupSidebarMode() {
 
       if (mode === "spam") {
         textarea.placeholder = "Paste text here...";
-      } else if (mode === "fake") {
-        textarea.placeholder = "Paste text or link here...";
+        linkInput.hidden = true;
+      }
+
+      if (mode === "fake") {
+        textarea.placeholder = "Input text article...";
+        linkInput.hidden = false;
       }
 
       buttons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
     });
-  }
-  );
+  });
 }
