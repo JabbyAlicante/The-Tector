@@ -2,10 +2,10 @@
 # The-Tector: Fake News
 
 ##  To Run:
-
-    1. cd fakeh_news/app
-    2. uvicorn main:app --host 0.0.0.0 --port 8000
-
+    1. get the trained_dataset.pkl from the gdrive provided below.
+    2. put it in 'fakeh_news/app/src/files/trained_dataset.pkl'
+    3. cd fakeh_news/app
+    4.. python or python3 main.py
 
 
 

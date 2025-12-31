@@ -19,13 +19,13 @@
 
 .contents textarea {
   width: 100%;
-  height: 220px;
+  height: 230px;
   resize: none;
   background: #cfe9dd;
   border: 3px solid #2a1e1e;
   padding: 10px;
   font-family: monospace;
-  font-size: 14px;
+  font-size: 18px;
   outline: none;
 }
 
@@ -36,7 +36,7 @@
   border: 3px solid #2a1e1e;
   padding: 12px;
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
   text-shadow: 1px 1px 0 #000;
 }
@@ -49,18 +49,6 @@
   transform: translateY(2px);
 }
 
-.alert {
-  margin-top: 12px;
-  padding: 10px;
-  border: 3px solid #6a040f;
-  background: #9d0208;
-  color: #fff;
-  text-align: center;
-  font-size: 10px;
-  text-shadow: 1px 1px 0 #000;
-  animation: blink 1s infinite;
-}
-
 .screen-title {
   font-size: 12px;
   margin-bottom: 12px;
@@ -68,12 +56,25 @@
   text-shadow: 1px 1px 0 #fff;
 }
 
+.link-input {
+  width: 100%;
+  height: 42px;
+  margin-bottom: 14px;
+  background: #f3efc9;
+  border: 3px solid #2a1e1e;
+  padding: 8px 10px;
+  font-family: monospace;
+  font-size: 16px;
+  outline: none;
+}
+
+
 .result-box {
   margin-top: 15px;
   padding: 10px;
   border: 3px solid #2a1e1e;
   background: #cfe9dd;
-  font-size: 10px;
+  font-size: 14px;
   display: flex;
   gap: 8px;
   justify-content: center;
@@ -90,16 +91,25 @@
   color: #065f46;
 }
 
+.icon-label {
+  align-items: center;
+  position: absolute;
+  transform: translateY(-28px);
+  font-size: 14px;
+  padding-bottom: 10px;
+}
 
 .icons-integration {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
   margin-top: 20px;
+  padding-top: 15px;
 }
 
 .integration-btn {
+  flex-direction: row;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -112,10 +122,11 @@
   color: #fff;
   border: 3px solid #2a1e1e;
   background: #c1662b;       
-  text-shadow: 1px 1px 0 #fff; 
+  /* text-shadow: 1px 1px 0 #fff;  */
   cursor: pointer;
   border-radius: 6px;
   transition: transform 0.2s, box-shadow 0.2s;
+  
 }
 
 .integration-btn:hover {
@@ -127,13 +138,3 @@
   font-size: 18px; 
 }
 
-@keyframes flicker {
-  0% { opacity: 1; }
-  50% { opacity: 0.96; }
-  100% { opacity: 1; }
-}
-
-@keyframes blink {
-  0%, 50%, 100% { opacity: 1; }
-  25%, 75% { opacity: 0.3; }
-}

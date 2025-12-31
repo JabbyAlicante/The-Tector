@@ -4,7 +4,7 @@ export default function sidebar(root) {
     <div class="sidebar">
       <button data-mode="spam">Spam</button>
       <button data-mode="fake">Fake News</button>
-      <button data-mode="badwords">Inappropriate words</button>
+      <button data-mode="badwords">Hate words</button>
     </div>
   `;
 }
