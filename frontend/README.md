@@ -2,7 +2,7 @@
 
 
 ## Run FrontEnd with Fake News Backend
-
+    #### Temporary Only
     1. Run Fake news backend First:
         a. fakeh_news/app
         b. uvicorn main:app --host 0.0.0.0 --port 8000
