@@ -21,7 +21,7 @@ async def lifespan(app: FastAPI):
     print("🚀 Launching Discord & Telegram bots...")
 
     # asyncio.create_task(run_discord_bot())
-    asyncio.create_task(run_telegram_bot())
+    # asyncio.create_task(run_telegram_bot())
 
     print("✅ Discord n Telegram bots started in background")
     yield

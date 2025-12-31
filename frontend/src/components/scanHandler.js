@@ -3,17 +3,20 @@ import { getScanMode } from "./scanState.js";
 export function setupScanHandler() {
   const btn = document.getElementById("detectBtn");
   const input = document.getElementById("detectorInput");
+  const link_input = document.getElementById("linkInput")
   const resultBox = document.getElementById("resultBox");
   const resultText = document.getElementById("resultText");
 
   btn.addEventListener("click", async () => {
     const mode = getScanMode();
     const value = input.value.trim();
+    const linkValue = link_input.value.trim();
 
-    if (!value) {
-      alert("Input is empty");
-      return;
-    }
+
+    // if (!value) {
+    //   alert("Input is empty");
+    //   return;
+    // }
 
     resultBox.hidden = false;
 
@@ -46,14 +49,18 @@ export function setupScanHandler() {
       resultText.textContent = "Scanning content if FAKE NEWS...";
 
         console.log(value)
+        console.log(linkValue)
 
 
        try {
                 const response = await fetch("/api/v1/predict", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ text: value, link: value})
+                    body: JSON.stringify({ text: value, link:linkValue
+
+                    })
                 });
+                console.log(link_input)
 
                 if (!response.ok) {
                     let errText;
