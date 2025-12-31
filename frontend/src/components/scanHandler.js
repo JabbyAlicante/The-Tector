@@ -41,8 +41,56 @@ export function setupScanHandler() {
         resultText.textContent = "Error connecting to spam classifier.";
       }
 
-    } else {
-      resultText.textContent = "Scanning content for fake news...";
+    }
+    else if (mode== "fake"){
+      resultText.textContent = "Scanning content if FAKE NEWS...";
+
+        console.log(value)
+
+
+       try {
+                const response = await fetch("/api/v1/predict", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text: value, link: value})
+                });
+
+                if (!response.ok) {
+                    let errText;
+                    try { errText = await response.text(); } catch { errText = response.statusText; }
+                    throw new Error(`${response.status} ${errText}`);
+                }
+
+                const data = await response.json();
+
+
+                // RESULT (prediction class lang and pecentage)
+                console.log("DATA:", data)
+                if (data.prediction_class) {
+                    const predictionClass = data.prediction_class;
+                    const isReyal = predictionClass.toLowerCase() === "real";
+                    const percentage = isReyal ? data.real_percentage : data.fake_percentage;
+                    // console.log("PERCENTAGE:", percentage)
+                    const roundPercent = Math.round(percentage);
+                    const resultClass = isReyal ? "real-news" : "fake-news";
+
+
+                    resultText.textContent = `"${roundPercent}% ${resultClass}"`
+                }
+
+
+
+              }catch (error) {
+                console.log("Error:", error);
+               resultText.textContent = `Error: ${error.message}`;
+
+            }}
+      
+    
+
+     else {
+      resultText.textContent = "Scanning content for HATE SPEECH...";
     }
   });
 }
+

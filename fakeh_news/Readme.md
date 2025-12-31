@@ -4,7 +4,8 @@
 ##  To Run:
 
     1. cd fakeh_news/app
-    2. python or python3 main.py
+    2. uvicorn main:app --host 0.0.0.0 --port 8000
+
 
 
 
