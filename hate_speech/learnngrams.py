@@ -104,13 +104,19 @@ tokens = []
 for review in reviews:
     tokens += tokenize(review)
 
+for i in tokens:
+    print(i)
+
 trigrams = ngram(tokens)
 bigrams = ngram(tokens, 2)
 unigrams = ngram(tokens, 1)
 
 vocab_size = (len(set(tokens)))
 
-(trigrams, bigrams, unigrams)
+# (trigrams, bigrams, unigrams)
+# print(f"tri: {trigrams}")
+# print(f"bi: {bigrams}")
+# print(f"uni: {unigrams}")
 
 def create_freq_table(grams, n = 3):
     freq = defaultdict(Counter) if n > 1 else Counter(grams)
@@ -231,11 +237,11 @@ def perplexity(sentence, model):
 
     return total_prob ** -(1 / word_count)
 
-perplexity("wqasdasd asdasds asd", trigram_freq)
-perplexity("the quick brown fox", trigram_freq)
+# perplexity("wqasdasd asdasds asd", trigram_freq)
+# perplexity("the quick brown fox", trigram_freq)
 
-print(perplexity("wqasdasd asdasds asd", trigram_freq))
-print(perplexity("the quick brown fox", trigram_freq))
+print(f"Gibberish: {perplexity('wqasdasd asdasds asd', trigram_freq)}")
+print(f"Sentence {perplexity('the quick brown fox', trigram_freq)}")
 
 
 
