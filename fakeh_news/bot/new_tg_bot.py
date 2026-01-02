@@ -8,9 +8,10 @@ import aiohttp
 from telegram.ext import MessageHandler, filters
 
 
-
 load_dotenv()
 
+
+print("FAKEH BOT IS RUNNING..")
 TOKEN = os.getenv("TELEGRAM_TOKEN")
 TELEGRAM_BOT_USERNAME = "@fakenewz_detector_bot"
 
@@ -107,7 +108,7 @@ async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # ----------------- RUNNER -------------------
-async def run_telegram_bot():
+def run_telegram_bot():
     print("Starting Telegram bot...")
 
     if not TOKEN:
@@ -121,16 +122,8 @@ async def run_telegram_bot():
     app.add_error_handler(error)
 
     # app.run_polling()  # owns the event loop
-    await app.bot.delete_webhook(drop_pending_updates=True)
-
-    await app.initialize()
-    await app.start()
-    await app.bot.initialize() 
-    print("✅ Telegram bot started")
-
-    # keep it alive
-    await asyncio.Event().wait()
 
 
-
+# if __name__ == "__main__":
+#     main()
 
