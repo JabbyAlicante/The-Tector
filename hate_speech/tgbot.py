@@ -2,6 +2,7 @@
 from typing import Final
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+from main import main
 # from main import *
 
 
@@ -41,7 +42,10 @@ def handle_response(text: str, user) -> str:
     else:
         full_name = user.first_name
 
-    return f"Hi, {full_name}"
+    # return f"Hi, {full_name}"
+    return main(text, full_name)
+
+
 
 
 # Here mag check if yung nag message ay sa private nag message or in a GC
