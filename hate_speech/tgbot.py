@@ -2,6 +2,7 @@
 from typing import Final
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+from main import main
 # from main import *
 
 
@@ -33,50 +34,40 @@ async def custom_command(update = Update, context = ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("This is a custom command")
 
 # RESPONSES
-def handle_response(text: str) -> str:
+def handle_response(text: str, user) -> str:
     text = text.lower()
 
-    # rg = ReplyGenerator()
-    
-    # return
-    # return f"{rg.get_reply(text)}\n{rg.get_next_word(text)}"
+    if user.last_name:
+        full_name = f"{user.first_name} {user.last_name}"
+    else:
+        full_name = user.first_name
 
-    if 'hello' in text:
-        return 'Hello po'
-    
-    if 'how are you' in text:
-        return 'I am good'
-    
-    if 'i love python' in text:
-        return 'okay'
-    
-    return 'Sorry, I dont understand'
+    # return f"Hi, {full_name}"
+    return main(text, full_name)
 
 
-    # Here tinawag natin yung function na nasa MAIN.PY and doon mo na lang ilagay yung output
-    # response = give_response(text)
-    # return response
 
 
 # Here mag check if yung nag message ay sa private nag message or in a GC
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_type: str = update.message.chat.type
     text: str = update.message.text
-    
+    user = update.effective_user  # ✅ get the user
+
     print(f"User: {update.message.chat.id} in {message_type} >>> {text}")
 
     if message_type == 'group':
-        # Papasok here if sa gc
+        # Group chat
         if BOT_USERNAME in text:
-            new_text: str = text.replace(BOT_USERNAME, '').strip
-            response: str = handle_response(new_text)
+            new_text: str = text.replace(BOT_USERNAME, '').strip()
+            response: str = handle_response(new_text, user)
         else:
             return
-    else: # here kapag private message langz
-        response: str = handle_response(text)
+    else:
+        # Private chat
+        response: str = handle_response(text, user)
 
-    # Here mag print yung message and syntax para mag reply sa User sa tg
-    print('BOT: ', response)
+    print('BOT:', response)
     await update.message.reply_text(response)
 
 # Sabi sa YT pang error message lang this
@@ -101,4 +92,4 @@ if __name__ == "__main__":
 
     # POLLS THE BOT
     print("Polling...")
-    app.run_polling(poll_interval=5)
+    app.run_polling(poll_interval=5, drop_pending_updates=True)

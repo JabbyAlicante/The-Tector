@@ -1,20 +1,12 @@
-# Install dependencies as needed:
-# pip install kagglehub[pandas-datasets]
-import kagglehub
-from kagglehub import KaggleDatasetAdapter
+import json
+texts = []
 
-# Set the path to the file you'd like to load
-file_path = ""
+with open("./hate_speech/datasets/txt.txt", "r") as file:
+    for line in file:
+        texts.append(line.strip())
 
-# Load the latest version
-df = kagglehub.load_dataset(
-  KaggleDatasetAdapter.PANDAS,
-  "mrmorj/hate-speech-and-offensive-language-dataset",
-  file_path,
-  # Provide any additional arguments like 
-  # sql_query or pandas_kwargs. See the 
-  # documenation for more information:
-  # https://github.com/Kaggle/kagglehub/blob/main/README.md#kaggledatasetadapterpandas
-)
+for i in texts:
+    print(i)
 
-print("First 5 records:", df.head())
+with open("./hate_speech/datasets/bad_words.json", "w", encoding="utf-8") as f:
+    json.dump(texts, f, indent=4, ensure_ascii=False)

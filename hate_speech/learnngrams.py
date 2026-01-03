@@ -1,6 +1,7 @@
 import re
 import math
 from collections import defaultdict, Counter
+import json
 
 reviews = [
     "Absolutely loved it! Exceeded my expectations.",
@@ -63,6 +64,15 @@ def normalize(text):
     text = re.sub(r"\W", '', text)
     text = re.sub(r"\s+", '', text)
     return text
+
+def get_bad_words():
+    print("get_bad_words")
+    with open("./hate_speech/datasets/bad_words.json", "r", encoding="utf-8") as f:
+        bw = json.load(f)
+
+    return bw
+
+
   
 
 def tokenize(text, special_tokens = True):
@@ -71,8 +81,8 @@ def tokenize(text, special_tokens = True):
     tokens = list(map(normalize, tokens))
 
     # This one is optional, depending on your use case
-    if special_tokens:
-        tokens = ["<s>"] + list(map(normalize, tokens)) + ["</s>"]
+    # if special_tokens:
+    #     tokens = ["<s>"] + list(map(normalize, tokens)) + ["</s>"]
     return tokens
 
 # print(normalize(reviews))
@@ -101,11 +111,17 @@ def ngram(tokens, n = 3):
 
 tokens = []
 
-for review in reviews:
-    tokens += tokenize(review)
+# for review in reviews:
+#     tokens += tokenize(review)
+bad_w = get_bad_words()
 
-for i in tokens:
-    print(i)
+print("badw")
+for wrds in bad_w:
+    tokens += tokenize(wrds)
+print("done tokenize")
+
+# for i in tokens:
+#     print(i)
 
 trigrams = ngram(tokens)
 bigrams = ngram(tokens, 2)
@@ -114,9 +130,11 @@ unigrams = ngram(tokens, 1)
 vocab_size = (len(set(tokens)))
 
 # (trigrams, bigrams, unigrams)
-# print(f"tri: {trigrams}")
-# print(f"bi: {bigrams}")
-# print(f"uni: {unigrams}")
+print(f"tri: {trigrams}")
+print(f"bi: {bigrams}")
+print(f"uni: {unigrams}")
+
+input()
 
 def create_freq_table(grams, n = 3):
     freq = defaultdict(Counter) if n > 1 else Counter(grams)
