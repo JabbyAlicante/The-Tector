@@ -9,7 +9,7 @@ export default defineConfig({
         changeOrigin: true
       },
       "/api": {
-        target: "http://172.20.207.196:8000",
+        target: "http://localhost:8000",
         changeOrigin: true
       }
     }

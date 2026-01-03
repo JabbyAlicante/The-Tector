@@ -12,9 +12,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "src")))
 from post_extraction import PostExtractor
 from preProcessing.preprocessing import Preprocessing
 from api.routes.v1 import prediction_route
-# from bot.discord_bot import run_discord_bot
+from bot.discord_bot import run_discord_bot
 # from bot.telegram_bot import run_telegram_bot
-# from bot.new_tg_bot import run_telegram_bot
+from bot.new_tg_bot import run_telegram_bot
 
 
 @asynccontextmanager
@@ -23,7 +23,7 @@ async def lifespan(app: FastAPI):
 
     # # asyncio.create_task(run_discord_bot())
     # asyncio.create_task(run_telegram_bot())
-    # telegram_task = asyncio.create_task(run_telegram_bot())
+    telegram_task = asyncio.create_task(run_telegram_bot())
 
     
     # loop = asyncio.get_event_loop()

@@ -1,11 +1,17 @@
+
 import discord
 from discord.ext import commands
 import logging
 from dotenv import load_dotenv
 import os
 import aiohttp
+from discord.ext import commands
+
 
 load_dotenv()
+
+
+
 
 token = os.getenv('DISCORD_TOKEN')
 
@@ -14,21 +20,21 @@ API_URL_PREDICT_LINK = "http://127.0.0.1:8000/api/v1/extract?url={}"
 
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 
-intents = discord.Intents.none()
-intents.message_content = True
-intents.messages = True
-# intents.members = True
+# intents = discord.Intents.none()
+# intents.message_content = True
+# intents.messages = True
+# # intents.members = True
 
-bot = commands.Bot(command_prefix='!', intents=intents)
-print("Bot intents:", bot.intents)
+# bot = commands.Bot(command_prefix='!', intents=intents)
+# print("Bot intents:", bot.intents)
 
 print("went to discord")
 # ----------------- EVENTS -------------------
-@bot.event
-async def on_ready():
-    print("We are ready to go")
-    # logging.info(f'Logged in as {bot.user.name} ({bot.user.id})')
-    await bot.change_presence(activity=discord.Game(name='Fake News Detector'))
+# @bot.event
+# async def on_ready():
+#     print("We are ready to go")
+#     # logging.info(f'Logged in as {bot.user.name} ({bot.user.id})')
+#     await bot.change_presence(activity=discord.Game(name='Fake News Detector'))
 
 
 # @bot.event
@@ -36,17 +42,17 @@ async def on_ready():
 #     await member.send(f"Welcome to the server, {member.name}!")
 
 
-@bot.event
-async def on_message(message):
-    print("Received message:", message.content)
-    if message.author == bot.user:
-        return
+# @bot.event
+# async def on_message(message):
+#     print("Received message:", message.content)
+#     if message.author == bot.user:
+#         return
     
-    if "shit" in message.content.lower():
-        await message.delete()
-        await message.channel.send(f"Watch your language, {message.author.name}!")
+#     if "shit" in message.content.lower():
+#         await message.delete()
+#         await message.channel.send(f"Watch your language, {message.author.name}!")
 
-    await bot.process_commands(message) # continue handling other messages
+#     await bot.process_commands(message) # continue handling other messages
 
 
 # ----------------- FUNCTIONS -------------------
@@ -66,13 +72,13 @@ async def call_extract(url: str):
             return await response.json()
 
 # ----------------- COMMANDS -------------------
-@bot.command()
-async def hello(ctx):
-    print("hi")
-    await ctx.send(f"Hello {ctx.author.name}!") # "!hello"
+# @bot.command()
+# async def hello(ctx):
+#     print("hi")
+#     await ctx.send(f"Hello {ctx.author.name}!") # "!hello"
 
 
-@bot.command()
+@commands.command()
 async def check(ctx, *, input_text: str = None):
     async with ctx.typing(): 
         contentt = None
@@ -162,10 +168,10 @@ async def check(ctx, *, input_text: str = None):
 
 # def run_discord_bot():
 #     bot.run(token, log_handler=handler, log_level=logging.DEBUG)
-async def run_discord_bot():
-    await bot.start(token)
+# async def run_discord_bot():
+#     await bot.start(token)
     
     
-if __name__ == "__main__":
-    import asyncio
-    asyncio.run(run_discord_bot())
+# if __name__ == "__main__":
+#     import asyncio
+#     asyncio.run(run_discord_bot())

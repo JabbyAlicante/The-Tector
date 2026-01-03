@@ -5,7 +5,7 @@ import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../..")))
 
 from app.preProcessing.preprocessing import Preprocessing
-from post_extraction import PostExtractor
+from src.post_extraction import PostExtractor
 from app.utils.file_utils import File_Utility
 
 

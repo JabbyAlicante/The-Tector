@@ -9,25 +9,29 @@ load_dotenv()
 
 token = os.getenv('DISCORD_TOKEN')
 
+
+session: aiohttp.ClientSession | None = None
+
 API_URL_PREDICT = "http://127.0.0.1:8000/api/v1/predict"
 API_URL_PREDICT_LINK = "http://127.0.0.1:8000/api/v1/extract?url={}"
 
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 
-intents = discord.Intents.none()
+intents = discord.Intents.default()
 intents.message_content = True
-intents.messages = True
-# intents.members = True
+intents.members = True
 
 bot = commands.Bot(command_prefix='!', intents=intents)
-print("Bot intents:", bot.intents)
 
 print("went to discord")
 # ----------------- EVENTS -------------------
 @bot.event
 async def on_ready():
+    global session
+    if session is None:
+        session = aiohttp.ClientSession()
+
     print("We are ready to go")
-    # logging.info(f'Logged in as {bot.user.name} ({bot.user.id})')
     await bot.change_presence(activity=discord.Game(name='Fake News Detector'))
 
 
@@ -51,19 +55,18 @@ async def on_message(message):
 
 # ----------------- FUNCTIONS -------------------
 async def fn_api(payload: dict):
-    print("here")
-    async with aiohttp.ClientSession() as session:
-        async with session.post(API_URL_PREDICT, json=payload) as response:
-            if response.status != 200:
-                return {"error": f"api error {response.status}"}
-            return await response.json()
+    async with session.post(API_URL_PREDICT, json=payload, timeout=20) as response:
+        if response.status != 200:
+            return {"error": f"api error {response.status}"}
+        return await response.json()
+
 
 async def call_extract(url: str):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(API_URL_PREDICT_LINK.format(url)) as response:
-            if response.status != 200:
-                return {"error": f"extract api error {response.status}"}
-            return await response.json()
+    async with session.get(API_URL_PREDICT_LINK.format(url), timeout=20) as response:
+        if response.status != 200:
+            return {"error": f"extract api error {response.status}"}
+        return await response.json()
+
 
 # ----------------- COMMANDS -------------------
 @bot.command()
@@ -164,8 +167,3 @@ async def check(ctx, *, input_text: str = None):
 #     bot.run(token, log_handler=handler, log_level=logging.DEBUG)
 async def run_discord_bot():
     await bot.start(token)
-    
-    
-if __name__ == "__main__":
-    import asyncio
-    asyncio.run(run_discord_bot())
