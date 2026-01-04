@@ -21,7 +21,7 @@ intents.message_content = True
 intents.messages = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-bot.add_command(check)
+
 
 #=======================EVENTS======================================
 @bot.event
@@ -33,15 +33,23 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     print("Received message:", message.content)
+    
+    text = message.content.lower()
     if message.author == bot.user:
         return
+    
+    
     
     if "shit" in message.content.lower():
         await message.delete()
         await message.channel.send(f"Watch your language, {message.author.name}!")
+    if text.startswith("!check"):
+        bot.add_command(check)
+       
 
+    
     if await is_spam(message, bot):
-        await message.channel.send(f"{message.author.name}, please stop spamming!")
+        await message.reply(f"{message.author.name}, please stop spamming!")
 
     await bot.process_commands(message)
 
@@ -49,7 +57,7 @@ async def on_message(message):
 #--------------------------BASIC COMMANDS-----------------------
 @bot.command()
 async def hello(ctx):
-    print("hi")
+    # print("hi")
     await ctx.send(f"Hello {ctx.author.name}!") # "!hello"
     
 

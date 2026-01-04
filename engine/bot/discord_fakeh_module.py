@@ -82,21 +82,29 @@ async def call_extract(url: str):
 async def check(ctx, *, input_text: str = None):
     async with ctx.typing(): 
         contentt = None
+        target_message = None
         print("FROM DISCORED", input_text)
 
         # pag reply
         if ctx.message.reference:
             try:
-                original_message = await ctx.channel.fetch_message(ctx.message.reference.message_id)
-                contentt = original_message.content
+                target_message = await ctx.channel.fetch_message(
+                    ctx.message.reference.message_id
+                )
+                # original_message = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+                contentt = target_message.content
             except discord.NotFound:
                 await ctx.send("⚠️ could not find reply message")
+                return
 
         elif input_text:
+            
             contentt = input_text.strip()
+            target_message = ctx.message 
 
         else:
-            await ctx.send("⚠️ provide text/link or reply to a message with `!check`")
+            await ctx.send("⚠️ provide text/link or reply to a message with `!check`",
+                            mention_author=False)
             return
         
 
@@ -148,7 +156,7 @@ async def check(ctx, *, input_text: str = None):
         else: 
             msg = f"⚠️ FAKEH: {roun_confidence}% confidence"
 
-        await ctx.send(msg)
+        await target_message.reply(msg, mention_author= False)
 
         # await ctx.send(
         #     f"Prediction: **{prediction_class.upper()}** news "

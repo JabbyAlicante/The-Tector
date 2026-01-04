@@ -3,8 +3,6 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../spam")))
 
 from spam_classifier import classify_message
-
-from spam_classifier import classify_message
 import discord
 import os
 
