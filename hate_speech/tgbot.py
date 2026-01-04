@@ -1,5 +1,6 @@
 # from ngrams import *
 from typing import Final
+import asyncio
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from main import main
@@ -56,19 +57,21 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     print(f"User: {update.message.chat.id} in {message_type} >>> {text}")
 
-    if message_type == 'group':
-        # Group chat
-        if BOT_USERNAME in text:
-            new_text: str = text.replace(BOT_USERNAME, '').strip()
-            response: str = handle_response(new_text, user)
-        else:
-            return
-    else:
-        # Private chat
-        response: str = handle_response(text, user)
+    mssg = handle_response(text, user)
 
-    print('BOT:', response)
-    await update.message.reply_text(response)
+    if mssg:
+        response: str = mssg
+
+        print('BOT:', response)
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text= response,
+            reply_to_message_id=update.message.message_id
+        )
+        
+        await asyncio.sleep(20)
+
+        await update.message.delete()
 
 # Sabi sa YT pang error message lang this
 async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
