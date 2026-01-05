@@ -1,8 +1,10 @@
 # from ngrams import *
 from typing import Final
+from datetime import datetime, timedelta, timezone
 import asyncio
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram import ChatPermissions
 from main import *
 # from main import *
 
@@ -34,22 +36,36 @@ async def help_command(update = Update, context = ContextTypes.DEFAULT_TYPE):
 async def custom_command(update = Update, context = ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("This is a custom command")
 
+
+async def mute_user(update, context, user_id, seconds=10):
+    until = datetime.now() + timedelta(seconds=seconds)
+
+    permissions = ChatPermissions(
+        can_send_messages=False,  # blocks all sending
+        can_send_polls=False,
+        can_send_other_messages=False,
+        can_add_web_page_previews=False
+        # leave other perms default (None)
+    )
+
+    await context.bot.restrict_chat_member(
+        chat_id=update.effective_chat.id,
+        user_id=user_id,
+        permissions=permissions,
+        until_date=until
+    )
+
+    await update.message.reply_text(
+        f"User has been muted until {until.strftime('%H:%M:%S')}."
+    )
+
 # RESPONSES
-def handle_response(text: str, user) -> str:
+def handle_response(text: str, user) -> str | None:
     text = text.lower()
 
-    if user.last_name:
-        full_name = f"{user.first_name} {user.last_name}"
-    else:
-        full_name = user.first_name
-
-    # return f"Hi, {full_name}"
-    return reply_message(text, full_name)
+    return reply_message(text, user)
 
 
-
-
-# Here mag check if yung nag message ay sa private nag message or in a GC
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     user = update.effective_user
@@ -64,8 +80,16 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     bot_msg = await update.message.reply_text(response)
 
-    await asyncio.sleep(20)
+    # Check warnings and ban if needed
+    ban_until = check_warnings(user.id)
+    if ban_until:
+        # Ban the user in Telegram
+        await mute_user(update, context, user.id, seconds=10)  # you can customize hours
+        await update.message.reply_text(
+            f"You have been banned until {ban_until.strftime('%Y-%m-%d %H:%M:%S')} for multiple violations."
+        )
 
+    # Optionally delete the bad message
     try:
         await update.message.delete()
     except Exception:
@@ -78,7 +102,7 @@ async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 if __name__ == "__main__":
-    usrs = get_users_log()
+    usrs = get_violators_log()
     print("users log retrieved")
 
     bw = get_bad_words()
