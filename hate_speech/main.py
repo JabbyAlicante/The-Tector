@@ -27,7 +27,7 @@ def get_users_log():
     # print("get users log: ", users)
 
     check_users(users)
-    # return users
+    return users
 
 def log_user():
     pass
@@ -60,7 +60,9 @@ def normalize(text):
 
 def tokenize(text, special_tokens = True):
     # TODO: exclude multi-word
-    tokens = re.split('[—\-\s\']', text)
+    # tokens = re.split('[—\-\s\']', text)
+    tokens = re.split(r"[—\-\s']", text)
+
     tokens = list(map(normalize, tokens))
 
     # This one is optional, depending on your use case
