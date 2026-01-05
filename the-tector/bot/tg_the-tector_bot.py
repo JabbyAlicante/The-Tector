@@ -36,10 +36,18 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def check_command(update, context):
-    if update.message.reply_to_message:
-        text = update.message.reply_to_message.text
-    else:
+    msg = update.message
+    target_message = None
+    text = None
+    
+    
+    if msg.reply_to_message:
+        target_message = msg.reply_to_message
+        text = target_message.text or target_message.caption
+    elif context.args:
+        
         text = " ".join(context.args)
+        target_message = msg
 
     if not text:
         await update.message.reply_text(

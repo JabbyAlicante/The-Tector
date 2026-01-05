@@ -64,8 +64,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     result = classify(text)
 
     if result == "spam":
-        response = "🚫Spam alert!! message from you classified as SPAM (^^ゞ."
-
+        response = "🚫Spam alert!! message from you classified as SPAM ┗( T﹏T )┛."
+        print("IS SPAM")
         try:
             if msg.chat.type == "channel":
                 await msg.delete()
