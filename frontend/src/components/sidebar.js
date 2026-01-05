@@ -2,9 +2,9 @@
 export default function sidebar(root) {
   root.innerHTML = `
     <div class="sidebar">
-      <button data-mode="spam">Spam</button>
-      <button data-mode="fake">Fake News</button>
-      <button data-mode="badwords">Hate words</button>
+      <button class="spam-btn" data-mode="spam">Spam</button>
+      <button class="fake-btn" data-mode="fake">Fake News</button>
+      <button class="hate-btn" data-mode="badwords">Hate words</button>
     </div>
   `;
 }

@@ -16,6 +16,61 @@
   /* padding-left: 0rem; */
 }
 
+.spam-btn {
+  font-family: 'Press Start 2P', monospace;
+  background: #c1662b;
+  border: 3px solid #2a1e1e;
+  padding: 10px 8px;
+  color: #ECE6C2;               
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 12px;
+  text-shadow: 1px 1px 0 #000; 
+  height: 70px;
+  display: flex;              
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 10px;      
+  }
+
+.fake-btn {
+  font-family: 'Press Start 2P', monospace;
+  background: #065f46;
+  border: 3px solid #2a1e1e;
+  padding: 10px 8px;
+  color: #ECE6C2;               
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 12px;
+  text-shadow: 1px 1px 0 #000; 
+  height: 70px;
+  display: flex;              
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 10px;      
+  }
+
+.hate-btn {
+  font-family: 'Press Start 2P', monospace;
+  background: #D2A24C;
+  border: 3px solid #2a1e1e;
+  padding: 10px 8px;
+  color: #ECE6C2;               
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 12px;
+  text-shadow: 1px 1px 0 #000; 
+  height: 70px;
+  display: flex;              
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 10px;      
+  }
+
+/* 
 .sidebar button {
   font-family: 'Press Start 2P', monospace;
   background: #c1662b;
@@ -32,13 +87,20 @@
   align-items: center;
   text-align: center;
   border-radius: 10px;      
+} */
+
+.hate-btn:hover {
+  background: #eec77e;
 }
 
+.fake-btn:hover {
+  background: #0b7a5c;
+}
 
-.sidebar button:hover {
+.spam-btn:hover {
   background: #e07a2f;
 }
 
-.sidebar button:active {
+.spam-btn, .fake-btn, .hate-btn:active {
   transform: translateY(2px);
 }

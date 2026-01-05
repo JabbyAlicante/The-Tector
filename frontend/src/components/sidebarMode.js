@@ -22,6 +22,8 @@ export function setupSidebarMode() {
         linkInput.hidden = false;
       }
 
+      
+
       buttons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
     });
