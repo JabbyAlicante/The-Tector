@@ -33,18 +33,17 @@ def check_warnings(user_id):
     violators = get_violators_log()
 
     for vltr in violators["violators"]:
-        if vltr["id"] == user_id and vltr["warnings"] >= 3:
-            ban_until = compute_ban_duration()
-
+        if vltr["id"] == user_id and vltr["warnings"] > 1:
+            # Reset warnings
             vltr["warnings"] = 0
-            vltr["banned_until"] = ban_until.strftime("%Y-%m-%d %H:%M:%S")
-
             with open("./hate_speech/datasets/violators.json", "w", encoding="utf-8") as f:
                 json.dump(violators, f, indent=4)
 
-            return ban_until
+            # Return True to indicate mute should happen
+            return True
 
-    return None
+    # Not enough warnings
+    return False
 
     
     # print(violators["violators"])
@@ -79,7 +78,7 @@ def get_users_log():
 
     # print("get users log: ", users)
 
-    check_users(users)
+    # check_users(users)
     return users
 
 def log_user():

@@ -37,28 +37,73 @@ async def custom_command(update = Update, context = ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("This is a custom command")
 
 
-async def mute_user(update, context, user_id, seconds=10):
-    until = datetime.now() + timedelta(seconds=seconds)
+async def mute_user(update: Update, context: ContextTypes.DEFAULT_TYPE, user_id: int, seconds: int = 10):
+    until = datetime.now(timezone.utc) + timedelta(seconds=seconds)
 
     permissions = ChatPermissions(
-        can_send_messages=False,  # blocks all sending
+        can_send_messages=False,
         can_send_polls=False,
         can_send_other_messages=False,
         can_add_web_page_previews=False
-        # leave other perms default (None)
+        # other permissions left as None
     )
 
+    try:
+        result = await context.bot.restrict_chat_member(
+            chat_id=update.effective_chat.id,
+            user_id=user_id,
+            permissions=permissions,
+            until_date=until
+        )
+
+        if result: 
+            await update.message.reply_text(
+                f"⚠️ User has been muted for {seconds} seconds."
+            )
+        else:
+            await update.message.reply_text(
+                "Could not mute the user. Check if they are an admin or owner."
+            )
+
+    except Exception as e:
+        await update.message.reply_text(
+            f"❌ Error muting user: {e}"
+        )
+async def temporary_mute(update, context, user_id, seconds=10):
+    # Step 1: Restrict sending messages
     await context.bot.restrict_chat_member(
         chat_id=update.effective_chat.id,
         user_id=user_id,
-        permissions=permissions,
-        until_date=until
+        permissions=ChatPermissions(
+            can_send_messages=False,
+        )
     )
 
-    await update.message.reply_text(
-        f"User has been muted until {until.strftime('%H:%M:%S')}."
+    # Notify user muted
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=f"⚠️ User muted for {seconds} seconds."
     )
 
+    # Step 2: Wait
+    await asyncio.sleep(seconds)
+
+    # Step 3: Restore normal permissions
+    await context.bot.restrict_chat_member(
+        chat_id=update.effective_chat.id,
+        user_id=user_id,
+        permissions=ChatPermissions(
+            can_send_messages=True,
+        )
+    )
+
+    # Notify user unmuted
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=f"✅ User unmuted after {seconds} seconds."
+    )
+
+    
 # RESPONSES
 def handle_response(text: str, user) -> str | None:
     text = text.lower()
@@ -69,32 +114,25 @@ def handle_response(text: str, user) -> str | None:
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     user = update.effective_user
-    chat_type = update.effective_chat.type
 
-    print(f"User {user.id} in {chat_type}: {text}")
+    print(f"User {user.id} in {update.effective_chat.type}: {text}")
 
+    # Check response for bad words
     response = handle_response(text, user)
 
-    if response is None:
-        return
+    if response:  # Only if there’s a warning
+        await update.message.reply_text(response)
 
-    bot_msg = await update.message.reply_text(response)
-
-    # Check warnings and ban if needed
-    ban_until = check_warnings(user.id)
-    if ban_until:
-        # Ban the user in Telegram
-        await mute_user(update, context, user.id, seconds=10)  # you can customize hours
-        await update.message.reply_text(
-            f"You have been banned until {ban_until.strftime('%Y-%m-%d %H:%M:%S')} for multiple violations."
-        )
-
-    # Optionally delete the bad message
-    try:
-        await update.message.delete()
-    except Exception:
-        pass
-
+        # Temporarily mute if warnings are enough
+        ban_until = check_warnings(user.id)
+        if ban_until:
+            # Use the temporary_mute function instead
+            asyncio.create_task(temporary_mute(update, context, user.id, seconds=10))
+        # Delete only the offending message
+        try:
+            await update.message.delete()
+        except Exception:
+            pass
 
 # Sabi sa YT pang error message lang this
 async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
