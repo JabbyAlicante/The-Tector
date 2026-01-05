@@ -3,7 +3,7 @@ from typing import Final
 import asyncio
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
-from main import main
+from main import *
 # from main import *
 
 
@@ -44,34 +44,33 @@ def handle_response(text: str, user) -> str:
         full_name = user.first_name
 
     # return f"Hi, {full_name}"
-    return main(text, full_name)
+    return reply_message(text, full_name)
 
 
 
 
 # Here mag check if yung nag message ay sa private nag message or in a GC
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    message_type: str = update.message.chat.type
-    text: str = update.message.text
-    user = update.effective_user  # ✅ get the user
+    text = update.message.text
+    user = update.effective_user
+    chat_type = update.effective_chat.type
 
-    print(f"User: {update.message.chat.id} in {message_type} >>> {text}")
+    print(f"User {user.id} in {chat_type}: {text}")
 
-    mssg = handle_response(text, user)
+    response = handle_response(text, user)
 
-    if mssg:
-        response: str = mssg
+    if response is None:
+        return
 
-        print('BOT:', response)
-        await context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text= response,
-            reply_to_message_id=update.message.message_id
-        )
-        
-        await asyncio.sleep(20)
+    bot_msg = await update.message.reply_text(response)
 
+    await asyncio.sleep(20)
+
+    try:
         await update.message.delete()
+    except Exception:
+        pass
+
 
 # Sabi sa YT pang error message lang this
 async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -79,8 +78,18 @@ async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 if __name__ == "__main__":
+    usrs = get_users_log()
+    print("users log retrieved")
+
+    bw = get_bad_words()
+    print("bad wprds retrieved")
+    # print(bw[0])
+
+    # check_users()
+    # print("users checked")
     print("The bot is starting...")
     app = Application.builder().token(TOKEN).build()
+
 
     # COMMANDS
     app.add_handler(CommandHandler('start', start_command))
@@ -88,11 +97,14 @@ if __name__ == "__main__":
     app.add_handler(CommandHandler('custom', custom_command))
 
     # MESSAGES
-    app.add_handler(MessageHandler(filters.TEXT, handle_message))
-
+    app.add_handler(
+        MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message)
+    )
     #  ERRORS
     app.add_error_handler(error)
 
     # POLLS THE BOT
     print("Polling...")
+    
     app.run_polling(poll_interval=5, drop_pending_updates=True)
+

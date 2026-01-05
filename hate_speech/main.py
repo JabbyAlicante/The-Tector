@@ -4,11 +4,35 @@ import re
 
 bw = None
 
-def main(rcved_mssg, user):
-    global bw  # ✅ tell Python to use the global variable
+def check_user_exists(user_id, users):
+    if user_id == 1:
+        print(1)
+    else:
+        pass
+    # pass
 
-    if bw is None:
-        bw = get_bad_words()
+def add_user(user_id, first_name, last_name):
+
+    pass
+
+def check_users(users):
+    for key, val in users.items():
+        print(val)
+    # pass
+
+def get_users_log():
+    with open("./hate_speech/datasets/users.json", "r", encoding="utf-8") as users_f:
+        users = json.load(users_f)
+
+    # print("get users log: ", users)
+
+    check_users(users)
+    # return users
+
+def log_user():
+    pass
+
+def reply_message(rcved_mssg, user):
 
     tknz = tokenize(rcved_mssg)
     print(f"Tokens: {tknz}")
@@ -17,6 +41,11 @@ def main(rcved_mssg, user):
         return f"warning: {user}"
 
 def get_bad_words():
+    global bw
+
+    # if bw is None:
+    #     bw = get_bad_words()
+
     print("get_bad_words")
     with open("./hate_speech/datasets/bad_words.json", "r", encoding="utf-8") as f:
         bw = json.load(f)
@@ -39,6 +68,8 @@ def tokenize(text, special_tokens = True):
     #     tokens = ["<s>"] + list(map(normalize, tokens)) + ["</s>"]
     return tokens
 
-# if __name__ == "__main__":
-#     m = main("bastard", "sample_user")
-#     print(m)
+if __name__ == "__main__":
+    # m = main("bastard", "sample_user")
+    # print(m)
+
+    get_users_log()
