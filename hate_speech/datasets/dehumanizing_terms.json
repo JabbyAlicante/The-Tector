@@ -1,0 +1,31 @@
+{
+  "words": [
+    "vermin",
+    "animals",
+    "subhuman",
+    "parasites",
+    "cockroaches",
+    "rats",
+    "disease",
+    "infestation",
+    "plague",
+    "scum",
+    "trash",
+    "filth",
+    "inferior",
+    "savage",
+    "primitive",
+    "uncivilized",
+    "barbarian"
+  ],
+  "patterns": [
+    {
+      "word": "subhuman",
+      "pattern": "sub[\\-\\s]?human"
+    },
+    {
+      "word": "infestation",
+      "pattern": "infest(ation|ed|ing)?"
+    }
+  ]
+}
