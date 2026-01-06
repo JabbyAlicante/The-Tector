@@ -1,0 +1,160 @@
+{
+  "racial_anti_black": {
+    "words": [
+      "n1gger",
+      "n1gga",
+      "coon",
+      "jigaboo",
+      "porch monkey",
+      "spade",
+      "tar baby"
+    ],
+    "patterns": [
+      {
+        "word": "nigga",
+        "pattern": "n[i1!\\*][g9][g9]?[e3]?r?"
+      }
+    ]
+  },
+
+
+  "racial_anti_asian": {
+    "words": [
+      "ch1nk",
+      "gook",
+      "slant",
+      "zipperhead"
+    ],
+    "patterns": []
+  },
+
+
+  "racial_anti_latino": {
+    "words": [
+      "wetback",
+      "beaner",
+      "spic",
+      "greaser"
+    ],
+    "patterns": []
+  },
+
+
+  
+  "racial_anti_white": {
+    "words": [
+      "cracker",
+      "honky",
+      "whitey",
+      "trailer trash"
+    ],
+    "patterns": []
+  },
+
+
+  "racial_anti_arab": {
+    "words": [
+      "towelhead",
+      "sand n1gger",
+      "camel jockey",
+      "dune coon"
+    ],
+    "patterns": []
+  },
+
+
+  "homophobic": {
+    "words": [
+      "f@ggot",
+      "f@g",
+      "qu33r",
+      "fairy",
+      "poof",
+      "dyke",
+      "carpet muncher",
+      "pillow biter"
+    ],
+    "patterns": [
+      {
+        "word": "faggot",
+        "pattern": "f[a@4][g9]?[g9]?[o0]?t?"
+      }
+    ]
+  },
+
+
+
+  "transphobic": {
+    "words": [
+      "tranny",
+      "shemale",
+      "tr@p",
+      "ladyboy",
+      "he-she"
+    ],
+    "patterns": []
+  },
+
+
+  "religious_anti_semitic": {
+    "words": [
+      "k1ke",
+      "hymie",
+      "sheeny",
+      "yid"
+    ],
+    "patterns": []
+  },
+
+
+  "religious_anti_muslim": {
+    "words": [
+      "terrorist",
+      "jihadi",
+      "raghead",
+      "ragheads",
+      "terorista"
+    ],
+    "patterns": []
+  },
+
+
+  "ableist": {
+    "words": [
+      "retard",
+      "ret@rd",
+      "mongoloid",
+      "spaz",
+      "gimp",
+      "cripple"
+    ],
+    "patterns": [
+      {
+        "word": "retard",
+        "pattern": "r[e3][t7][a@4]rd"
+      }
+    ]
+  },
+
+
+  "misogynistic": {
+    "words": [
+      "bitch",
+      "cunt",
+      "wh0re",
+      "slut",
+      "thot",
+      "hoe"
+    ],
+    "patterns": [
+      {
+        "word": "bitch",
+        "pattern": "b[i1!][t7]?ch"
+      },
+      {
+        "word": "cunt",
+        "pattern": "c[u*][n]+[t7]"
+      }
+    ]
+  }
+}
