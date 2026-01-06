@@ -7,6 +7,7 @@ import asyncio
 import aiohttp
 import logging
 import re
+
 from discord_spam_module  import is_spam
 from discord_fakeh_module import check
 
@@ -19,9 +20,11 @@ TOKEN = os.getenv("DISCORD_TOKEN")  # Reads token from .env
 intents = discord.Intents.default()
 intents.message_content = True
 intents.messages = True
+intents.members = True
+intents.presences = True  
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-
+bot.add_command(check)
 
 #=======================EVENTS======================================
 @bot.event
@@ -35,6 +38,7 @@ async def on_message(message):
     print("Received message:", message.content)
     
     text = message.content.lower()
+    
     if message.author == bot.user:
         return
     
@@ -43,11 +47,8 @@ async def on_message(message):
     if "shit" in message.content.lower():
         await message.delete()
         await message.channel.send(f"Watch your language, {message.author.name}!")
-    if text.startswith("!check"):
-        bot.add_command(check)
-       
-
-    
+   
+     
     if await is_spam(message, bot):
         await message.reply(f"{message.author.name}, please stop spamming!")
 
@@ -62,8 +63,11 @@ async def hello(ctx):
     
 
 
-#--------------------------DETECTION FUNCTION-----------------------
-
+#--------------------------RUNNNNNNNNNNNN-----------------------
+def run_discord_bot():
+    bot.run(TOKEN)
+    
+    
     
 if __name__ == "__main__":
     bot.run(TOKEN)

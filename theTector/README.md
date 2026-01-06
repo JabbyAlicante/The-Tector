@@ -7,7 +7,7 @@
 
 ## How to run Backend
 - from the 'The-Tector'
--run 'python3 -m the-tector.main'
+- run 'python3 -m the-tector.main'
 (this will run both spam and fake, just waiting for hate)
 
 

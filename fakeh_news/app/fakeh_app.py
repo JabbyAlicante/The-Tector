@@ -17,40 +17,40 @@ from api.routes.v1 import prediction_route
 # from bot.new_tg_bot import run_telegram_bot
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    print("🚀 Launching Discord & Telegram bots...")
+# @asynccontextmanager
+# async def lifespan(app: FastAPI):
+#     # print("🚀 Launching Discord & Telegram bots...")
 
-    # # asyncio.create_task(run_discord_bot())
-    # asyncio.create_task(run_telegram_bot())
-    # telegram_task = asyncio.create_task(run_telegram_bot())
+#     # # asyncio.create_task(run_discord_bot())
+#     # asyncio.create_task(run_telegram_bot())
+#     # telegram_task = asyncio.create_task(run_telegram_bot())
 
     
-    # loop = asyncio.get_event_loop()
-    # # loop.create_task(run_discord_bot())   # run discord bot async
-    # loop.create_task(run_telegram_bot())  # run telegram bot async
+#     # loop = asyncio.get_event_loop()
+#     # # loop.create_task(run_discord_bot())   # run discord bot async
+#     # loop.create_task(run_telegram_bot())  # run telegram bot async
 
-    try:
-        yield
-    finally:
-        telegram_task.cancel()
-        print("🛑 Shutting down bots")
+#     try:
+#         yield
+#     finally:
+#         telegram_task.cancel()
+#         print("🛑 Shutting down bots")
 
 
-app = FastAPI(title="Fake News Detection API", version="1.0.0", lifespan = lifespan)
+app = FastAPI(title="Fake News Detection API", version="1.0.0")
 
 
 app.include_router(prediction_route.router, prefix="/api/v1", tags=["Prediction"])
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-INDEX_PATH = os.path.join(BASE_DIR, "index.html")
+# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# INDEX_PATH = os.path.join(BASE_DIR, "index.html")
 
-app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
+# app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
-@app.get("/")
-async def serve_index():
-    print("API INITIALIZED")
-    return FileResponse(INDEX_PATH)
+# @app.get("/")
+# async def serve_index():
+#     print("API INITIALIZED")
+#     return FileResponse(INDEX_PATH)
 
 # @app.get("/")
 # async def root():
