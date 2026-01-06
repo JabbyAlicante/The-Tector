@@ -1,0 +1,24 @@
+{
+  "general_news": [
+    "bbc.com",
+    "reuters.com",
+    "apnews.com"
+  ],
+  "philippines": [
+    "gov.ph",
+    "pna.gov.ph",
+    "inquirer.net",
+    "rappler.com"
+  ],
+  "fact_checkers": [
+    "snopes.com",
+    "politifact.com",
+    "factcheck.org",
+    "verafiles.org"
+  ],
+  "health": [
+    "who.int",
+    "cdc.gov",
+    "nih.gov"
+  ]
+}

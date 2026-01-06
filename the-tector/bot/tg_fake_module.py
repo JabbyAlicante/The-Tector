@@ -39,6 +39,13 @@ async def run_fakeh_module(text: str):
         return f"⚠️ Predict API error: {data['error']}"
 
     prediction = data.get("prediction_class", "unknown")
+    recommendations = data.get("recommendations", "None")
+    
+    if isinstance(recommendations, list) and recommendations:
+      
+        rec_text = "\n \n".join(f"✅ {r}" for r in recommendations[:3])  # top 3 links
+    else:
+        rec_text = f"💡 ALWAYS CHECK YOUR NEWS IN:\n✅ {recommendations}"
     confidence = (
         data.get("real_percentage", 0)
         if prediction.lower() == "real"
@@ -48,8 +55,8 @@ async def run_fakeh_module(text: str):
     confidence = round(confidence, 2)
 
     if prediction.lower() == "real":
-        return f"✅ REAL news ({confidence}%)"
+        return f"✅ REAL news ({confidence}%)\n \n ============================================== \n 🟢VERIFIED, but it’s good to stay cautious, fact-check on this websites when possible\n \n {rec_text}"
     elif prediction.lower() == "fake":
-        return f"⚠️ FAKE news ({confidence}%)"
+        return f"⚠️FAKE news ({confidence}%)\n \n ============================================== \n📌 This info seems unreliable. Cross-check here:\n \n {rec_text}"
     else:
         return "⚠️ Unable to determine authenticity"

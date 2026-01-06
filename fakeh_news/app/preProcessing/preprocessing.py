@@ -1,6 +1,7 @@
 import re
 import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from pathlib import Path
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from utils.file_utils import File_Utility
 
@@ -11,10 +12,18 @@ class Preprocessing:
         self.file_util = File_Utility()
         self.NEGATED_WORDS = ["not", "no", "never", "n't", "cannot", "can't", "cant", "don't", "dont", "doesn't", "doesnt", "won't", "wont", "shouldn't", "shouldnt", "wouldn't", "wouldnt", "couldn't", "couldnt"]
         self.neg_scope = neg_scope  # max words to tag after negation (to avoid over tagging negated words)
-        self.STOPWORDS = self.file_util.load_stopwords("src/files/stopwords.txt")
-        self.MULTI_WORDS = self.file_util.load_multiwords("src/files/multi_words.txt")
-        self.NEGATED_NAMES = self.file_util.read_file("src/files/names.txt")
+        
+        BASE_DIR = Path(__file__).resolve().parent.parent
+        STOPWORDS_PATH = BASE_DIR / "src" / "files" / "stopwords.txt"
 
+        self.STOPWORDS = self.file_util.load_stopwords(STOPWORDS_PATH)
+        self.MULTI_WORDS = self.file_util.load_multiwords(
+            BASE_DIR / "src" / "files" / "multi_words.txt"
+        )
+
+        self.NEGATED_NAMES = self.file_util.read_file(
+            BASE_DIR / "src" / "files" / "names.txt"
+        )
         # print(self.MULTI_WORDS)
     def normalize(self, text):
         

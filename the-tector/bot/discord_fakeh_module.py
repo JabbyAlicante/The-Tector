@@ -137,6 +137,15 @@ async def check(ctx, *, input_text: str = None):
             return
         
         prediction_class = data.get("prediction_class", "Unkown")
+        recommendations = data.get("recommendations", "None")
+    
+        if isinstance(recommendations, list) and recommendations:
+        
+            rec_text = "\n \n".join(f"✅ {r}" for r in recommendations[:3])  # top 3 links
+        else:
+            rec_text = f"💡 ALWAYS CHECK YOUR NEWS IN:\n✅ {recommendations}"
+            
+        
         confidence = (
                 data.get("real_percentage", 0)
                 if prediction_class.lower() == "real"
@@ -152,11 +161,11 @@ async def check(ctx, *, input_text: str = None):
         #     )
 
         if prediction_class.lower() == "real":
-            msg = f"✅ REYAL: {roun_confidence}% confidence"
+            msg = f"✅ REYAL: {roun_confidence}% confidence \n \n ============================================== \n 🟢VERIFIED, but it’s good to stay cautious, fact-check on this websites when possible\n \n {rec_text}"
         else: 
-            msg = f"⚠️ FAKEH: {roun_confidence}% confidence"
+            msg = f"⚠️ FAKEH: {roun_confidence}% confidence \n \n ============================================== \n📌 This info seems unreliable. Cross-check here:\n \n {rec_text}"
 
-        await target_message.reply(msg, mention_author= False)
+        await target_message.reply(msg, mention_author= True)
 
         # await ctx.send(
         #     f"Prediction: **{prediction_class.upper()}** news "

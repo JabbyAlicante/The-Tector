@@ -1,5 +1,7 @@
 
 import math
+import json
+from pathlib import Path
 
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../..")))
@@ -8,6 +10,7 @@ from app.preProcessing.preprocessing import Preprocessing
 from src.post_extraction import PostExtractor
 from app.utils.file_utils import File_Utility
 
+BASE_DIR = Path(__file__).resolve().parents[3]
 
 class PredictionModel:
     
@@ -17,10 +20,15 @@ class PredictionModel:
         self.extractor = PostExtractor()
         self.file_utility = File_Utility()
         
-        self.trainedData_path = "src/files/trained_dataset.pkl"
-        self.verifiedSources_path = "src/files/sources.txt"
+        self.trainedData_path = BASE_DIR / "src" / "files" / "trained_dataset.pkl"
+        self.verifiedSources_path = BASE_DIR / "src" / "files" / "sources.txt"
+        self.v_sources_path = BASE_DIR / "src" / "files" / "verified_sources.json"
+        
         self.trained_data= self.file_utility.read_pickle_file(self.trainedData_path)
         self.sources = self.file_utility.read_file(self.verifiedSources_path)
+        self.v_sources = self.file_utility.read_json(self.v_sources_path)
+        
+        # print(self.v_sources)
         
         
     def tokenize_input(self, user_input, token_list):
@@ -28,6 +36,23 @@ class PredictionModel:
         token = self.preprocessing.tokenize(user_input)
     
         return token
+    
+    def recommend_sources(self, text):
+        text = text.lower()
+        suggestions=[]
+        
+        if any(word in text for word in ["health", "cure", "disease", "medicine"]):
+            suggestions.extend(self.v_sources["health"])
+
+        if any(word in text for word in ["philippines", "dfa", "china", "government"]):
+            suggestions.extend(self.v_sources["philippines"])
+
+        #  fact-checkers
+        suggestions.extend(self.v_sources["fact_checkers"])
+
+        return list(dict.fromkeys(suggestions))[:3] 
+            
+        
     
     def prediction(self, text, linksource = None):
         probab_score_dict = self.trained_data
@@ -115,12 +140,25 @@ class PredictionModel:
         prediction = max(probs, key=probs.get)
         label_name = "Fake" if prediction == "0" else "Real"
         
+        recommendations = []
+        
+        if label_name == "Fake":
+            recommendations = self.recommend_sources(text)
+            
+            print(recommendations)
+            
+        
         
         
        
         # print(f"Final prediction: {label_name} ({prediction})")
 
-        return prediction,label_name, text ,final
+        return {
+            "prediction": label_name,
+            "scores": final,
+            "recommendations": recommendations
+        }
+
     
     def extract_and_predict(self, link:str):
         post = self.extractor.extract_post(link)

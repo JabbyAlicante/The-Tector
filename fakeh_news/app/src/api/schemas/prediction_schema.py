@@ -21,3 +21,4 @@ class PredictionResponse(BaseModel):
     fake_percentage: float
     real_score: float
     real_percentage: float
+    recommendations: list[str] = []

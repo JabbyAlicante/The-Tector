@@ -72,6 +72,8 @@ async def extract_port(url: str = Query(..., description="URL to scrape")):
             "titlee": preprocess.tokenize(post["title"]),
             "bodyy": preprocess.tokenize(post["body"])
         }
+        
+        print(processed)
 
         return {"original": post, "processed": processed}
 
@@ -102,11 +104,11 @@ async def extract_port(url: str = Query(..., description="URL to scrape")):
 
 #     print("✅ Discord n Telegram bots started in background")
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(
-        app,
-        host="0.0.0.0",
-        port=8000,
-        reload=False
-    )
+# if __name__ == "__main__":
+#     import uvicorn
+#     uvicorn.run(
+#         app,
+#         host="0.0.0.0",
+#         port=8000,
+#         reload=False
+#     )

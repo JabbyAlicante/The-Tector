@@ -17,38 +17,44 @@ class PredictionController:
         
         
     async def get_prediction(self, request: PredictionRequest):
-        print("LINK: ",request.link)
-        
-        if request.link:  
-       
-            prediction, label, text, final = await run_in_threadpool(
+        print("LINK: ", request.link)
+
+        # Run prediction in a thread pool
+        if request.link:
+            result = await run_in_threadpool(
                 self.predictionModel.prediction, request.text, request.link
             )
-            
         else:
-            
-            
-            prediction, label, text, final = await run_in_threadpool(self.predictionModel.prediction, request.text)
-        
-      
+            result = await run_in_threadpool(
+                self.predictionModel.prediction, request.text
+            )
+
+        # result is now a dict
+        prediction = result["prediction"]
+        final = result["scores"]
+        recommendations = result.get("recommendations", [])
+        text = request.text
+        label = prediction  # same as prediction for backwards compatibility
+
         fake_score = final["fake"]["score"]
         fake_percentage = final["fake"]["percentage"]
         real_score = final["real"]["score"]
         real_percentage = final["real"]["percentage"]
-        
-        
-        return PredictionResponse(
-            
-    final_prediction=prediction,
-    prediction_class=label,
-    user_input=text,
-    fake_score=fake_score,
-    fake_percentage=fake_percentage,
-    real_score=real_score,
-    real_percentage=real_percentage
-)
 
-        
+        print("CONTROLLER recommendations:", recommendations)
+
+        return PredictionResponse(
+            final_prediction=prediction,
+            prediction_class=label,
+            user_input=text,
+            fake_score=fake_score,
+            fake_percentage=fake_percentage,
+            real_score=real_score,
+            real_percentage=real_percentage,
+            recommendations=recommendations
+        )
+
+            
         
          
         

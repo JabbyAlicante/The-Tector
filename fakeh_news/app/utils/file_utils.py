@@ -2,6 +2,7 @@ import pickle
 
 import os
 import ast
+import json
 
 
 
@@ -28,6 +29,16 @@ class File_Utility:
         
             
         return data
+    
+    def read_json(self, file_path):
+        file_path = os.path.normpath(file_path)
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"{file_path} not found")
+       
+        with open(file_path, 'r') as file:
+            return json.load(file)
+               
+        
     
     def read_raw_file(self, file_path):
        
