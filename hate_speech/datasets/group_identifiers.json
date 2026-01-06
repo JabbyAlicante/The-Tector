@@ -1,0 +1,137 @@
+{
+  "racial_black": 
+    [
+        "black people", 
+        "blacks", 
+        "african americans", 
+        "africans",
+        "nigger",
+        "nigga",
+        "negro"
+    ],
+
+
+  "racial_asian": 
+    [
+        "asian people", 
+        "asians", 
+        "chinese", 
+        "japanese", 
+        "koreans",
+        "asian",
+        "singkit"
+    ],
+
+
+  "racial_latino": 
+    [
+        "latinos", 
+        "hispanics", 
+        "mexicans", 
+        "latin people"
+    ],
+
+  "racial_white": 
+    [
+        "white people", 
+        "whites", 
+        "caucasians",
+        "kano"
+    ],
+
+
+  "racial_arab": 
+    [
+        "arabs", 
+        "middle eastern", 
+        "muslims",
+        "muslim"
+    ],
+
+
+  "religious_jewish": 
+    [
+        "jews", 
+        "jewish people", 
+        "israelis"
+    ],
+
+
+  "religious_muslim":
+    [
+        "muslims", 
+        "islamic people", 
+        "arabs",
+        "islam"
+    ],
+
+  "religious_christian": 
+    [
+        "christians", 
+        "christian people"
+    ],
+
+  "lgbtq_gay": 
+    [
+        "gay people", 
+        "gays", 
+        "homosexuals",
+        "bakla",
+        "bayot"
+    ],
+
+
+  "lgbtq_trans": 
+    [
+        "trans people", 
+        "transgender", 
+        "transsexuals"
+    ],
+
+
+  "lgbtq_general": 
+    [
+        "lgbt", 
+        "lgbtq", 
+        "queer people"
+    ],
+
+
+  "gender_women": 
+    [
+        "women", 
+        "females", 
+        "girls", 
+        "feminists"
+    ],
+
+  "gender_men": 
+    [
+        "men", 
+        "males", 
+        "boys",
+        "lalaki"
+    ],
+
+
+
+  "national": 
+    [
+        "immigrants", 
+        "refugees", 
+        "foreigners", 
+        "illegals"
+    ],
+
+
+
+  "disability": 
+    [
+        "disabled people", 
+        "handicapped", 
+        "mentally ill",
+        "baliw",
+        "siraulo",
+        "kulang-kulang"
+    ]
+}
