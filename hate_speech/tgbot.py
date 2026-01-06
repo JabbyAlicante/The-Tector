@@ -181,8 +181,8 @@ def check_warnings(user_id):
     # pass
 
 def get_violators_log():
-    with open(violators_f, "r", encoding="utf-8") as violators_f:
-        violators = json.load(violators_f)
+    with open(violators_f, "r", encoding="utf-8") as v_f:
+        violators = json.load(v_f)
 
     # print("get violators log: ", violators)
 
