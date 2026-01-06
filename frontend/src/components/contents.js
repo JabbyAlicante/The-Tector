@@ -23,10 +23,10 @@ export default function contents(root) {
       </div>
       <div class="icons-integration">
         <span class="icon-label">INTEGRATIONS:</span>
-        <a href="https://discord.com/channels/@me" class="integration-btn" target="_blank">
+        <a href="https://discord.com/oauth2/authorize?client_id=1456872953206800394&permissions=274877982720&integration_type=0&scope=bot" class="integration-btn" target="_blank">
           <i class="fa-brands fa-discord"></i> Discord
         </a>
-        <a href="tg://resolve?domain=YourTelegramUsername" class="integration-btn">
+        <a href="https://t.me/the_tector_bot" class="integration-btn">
           <i class="fa-brands fa-telegram"></i> Telegram
         </a>
       </div>
