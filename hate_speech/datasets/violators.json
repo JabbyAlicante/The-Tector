@@ -11,6 +11,23 @@
             "full_name": "\u307f\u3061 None",
             "warnings": 0,
             "banned_until": "2026-01-05 17:10:18"
+        },
+        {
+            "id": 1163442680408317952,
+            "full_name": "gerigreizelle g",
+            "warnings": 9,
+            "violations": [
+                "profanity",
+                "profanity",
+                "profanity",
+                "profanity",
+                "profanity",
+                "profanity",
+                "profanity",
+                "profanity",
+                "profanity"
+            ],
+            "banned_until": null
         }
     ]
 }
