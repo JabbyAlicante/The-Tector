@@ -1,0 +1,72 @@
+ID: 1458160051146719252
+👤 Author: colee_flower (ID: 1305376241867821219)
+📍 Channel: general
+📝 Message: fuck
+📌 Reason: Detected
+📝 Analysis:
+⚠️ Warning 1/3: colee_flower coleeflower
+----------------------------------------
+ID: 1458160318503977153
+👤 Author: colee_flower (ID: 1305376241867821219)
+📍 Channel: general
+📝 Message: fuck
+📌 Reason: Detected
+📝 Analysis:
+⚠️ Warning 2/3: colee_flower coleeflower
+----------------------------------------
+ID: 1458160354382188566
+👤 Author: colee_flower (ID: 1305376241867821219)
+📍 Channel: general
+📝 Message: shit
+📌 Reason: Detected
+📝 Analysis:
+🔇 colee_flower coleeflower has been muted for 2 hours.
+----------------------------------------
+ID: 1458162703775436882
+👤 Author: colee_flower (ID: 1305376241867821219)
+📍 Channel: general
+📝 Message: poof
+📌 Reason: Detected
+📝 Analysis:
+⚠️ Warning 0/3: colee_flower coleeflower
+----------------------------------------
+ID: 1458162725166518374
+👤 Author: colee_flower (ID: 1305376241867821219)
+📍 Channel: general
+📝 Message: poof
+📌 Reason: Detected
+📝 Analysis:
+⚠️ Warning 0/3: colee_flower coleeflower
+----------------------------------------
+ID: 1458162744791531647
+👤 Author: colee_flower (ID: 1305376241867821219)
+📍 Channel: general
+📝 Message: fuck
+📌 Reason: Detected
+📝 Analysis:
+🔇 colee_flower coleeflower has been muted for 2 hours.
+----------------------------------------
+ID: 1458162863762833602
+👤 Author: colee_flower (ID: 1305376241867821219)
+📍 Channel: general
+📝 Message: fuck
+📌 Reason: Detected
+📝 Analysis:
+🔇 colee_flower coleeflower has been muted for 2 hours.
+----------------------------------------
+ID: 1458162890744926561
+👤 Author: colee_flower (ID: 1305376241867821219)
+📍 Channel: general
+📝 Message: fuck
+📌 Reason: Detected
+📝 Analysis:
+🔇 colee_flower coleeflower has been muted for 2 hours.
+----------------------------------------
+ID: 1458162938295877703
+👤 Author: colee_flower (ID: 1305376241867821219)
+📍 Channel: general
+📝 Message: fuckk
+📌 Reason: Detected
+📝 Analysis:
+🔇 colee_flower coleeflower has been muted for 2 hours.
+----------------------------------------

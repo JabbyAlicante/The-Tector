@@ -11,29 +11,29 @@ from datetime import datetime, timedelta
 
 # Load datasets | Maliit scope, add more tagalog
 def load_badwords():
-    with open("./hate_speech/datasets/badwords.json", "r", encoding="utf-8") as f:
+    with open("../../hate_speech/datasets/badwords.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
 def load_slurs():
-    with open("./hate_speech/datasets/slurs.json", "r", encoding="utf-8") as f:
+    with open("../../hate_speech/datasets/slurs.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
 def load_group_identifiers():
-    with open("./hate_speech/datasets/group_identifiers.json", "r", encoding="utf-8") as f:
+    with open("../../hate_speech/datasets/group_identifiers.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
 def load_dehumanizing_terms():
-    with open("./hate_speech/datasets/dehumanizing_terms.json", "r", encoding="utf-8") as f:
+    with open("../../hate_speech/datasets/dehumanizing_terms.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
 
 def load_violence_patterns():
-    with open("./hate_speech/datasets/violence_patterns.json", "r", encoding="utf-8") as f:
+    with open("../../hate_speech/datasets/violence_patterns.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
 
 def load_hate_phrases():
-    with open("./hate_speech/datasets/hate_phrases.json", "r", encoding="utf-8") as f:
+    with open("../../hate_speech/datasets/hate_phrases.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -388,13 +388,13 @@ def analyze_content(text):
 
 def get_violators_log():
 
-    with open("./hate_speech/datasets/violators.json", "r", encoding="utf-8") as f:
+    with open("../../hate_speech/datasets/violators.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
 
 def save_violators(violators):
 
-    with open("./hate_speech/datasets/violators.json", "w", encoding="utf-8") as f:
+    with open("../../hate_speech/datasets/violators.json", "w", encoding="utf-8") as f:
         json.dump(violators, f, indent=4)
 
 

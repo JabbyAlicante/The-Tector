@@ -8,6 +8,7 @@ import aiohttp
 from telegram.ext import MessageHandler, filters
 from tg_fake_module import run_fakeh_module
 from tg_spam_module import handle_message as spam_handler
+from tg_hate_module import handle_message as hate_message_handler
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 load_dotenv(BASE_DIR / ".env")
@@ -59,7 +60,9 @@ async def check_command(update, context):
     result = await run_fakeh_module(text)
     await update.message.reply_text(result)
     
-    
+async def main_message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await spam_handler(update, context)
+    await hate_message_handler(update, context)
     
 # async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 #     message = update.message
@@ -72,10 +75,14 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_command))
     app.add_handler(CommandHandler("check", check_command))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, spam_handler))
+    # app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, spam_handler))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, main_message_handler))
 
+    
+
+    
     print("🤖 Telegram bot is running...")
-    app.run_polling()
+    app.run_polling(poll_interval=5, drop_pending_updates=True)
 
 
 if __name__ == "__main__":

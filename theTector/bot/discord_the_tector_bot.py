@@ -10,6 +10,7 @@ import re
 
 from discord_spam_module  import is_spam
 from discord_fakeh_module import check
+from discord_hate_module import on_message as is_hate
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 load_dotenv(BASE_DIR / ".env")
@@ -50,7 +51,10 @@ async def on_message(message):
    
      
     if await is_spam(message, bot):
-        await message.reply(f"{message.author.name}, please stop spamming!")
+        await message.reply(f"🚫Spam alert!! message from you classified as SPAM ┗( T﹏T )┛. {message.author.mention}, please stop spamming!")
+        
+    await is_hate(message)
+        # await message.reply(f"🚫Hate Alert!! message from you classified as SPAM ┗( T﹏T )┛. {message.author.name}, please stop spamming!")
 
     await bot.process_commands(message)
 
