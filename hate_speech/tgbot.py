@@ -1,26 +1,20 @@
 # from ngrams import *
+import os
 from typing import Final
 from datetime import datetime, timedelta, timezone
 import asyncio
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from telegram import ChatPermissions
-from main import *
+# from tgbe import *
+import json
+import re
+from datetime import datetime, timedelta
 # from main import *
 
-
-# Here po yung flow
-# sa COMMANDS, bali commands sa tgbot na pwede i-setup sa tg
-# kapag ni run ang code, mag wait na si tg bot for responses sa tg
-# and kapag nag message na sa tg, papasok muna sa function na handle_message
-# then mag reply na si bot using the handle_response na function
-
-# NOTE: (NO NEED TO WORRY NAMAN SA NAKA NOTE PERO NAG INCLUDE AKO JUST IN CASE NA MAG ASK U) 
-# kaya may logic na mag check if sa GC or in private nag message ang user
-# kasi sa private, every message mag reply si bot pero kapag nasa gc siya, that
-# means na mag reply siya sa users. kaya need lang i-mention si bot sa gc tsaka
-# lang mag reply. Included kasi ang logic na 'to sa YT tutorial so ni add ko na rin
-# YT LINK: https://www.youtube.com/watch?v=vZtm1wuA2yc
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+violators_f = os.path.join(BASE_DIR, 'datasets', 'violators.json')
+bad_words_f = os.path.join(BASE_DIR, 'datasets', 'bad_words.json')
 
 TOKEN: Final = '8558133241:AAG-fVtqsubFZYQVNbmPaEItNZjmpBNzY8I'
 BOT_USERNAME: Final = '@HateSpeechDTCTR_bot'
@@ -137,6 +131,143 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Sabi sa YT pang error message lang this
 async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print(f"UPDATE {update} | caused error: {context.error}")
+
+
+bw = None
+
+def check_violator_exists(user_id, violators):
+    return any(v["id"] == user_id for v in violators["violators"])
+
+def add_violator(violator_id, first_name, last_name):
+    violators = get_violators_log()
+
+    violators["violators"].append({
+        "id": violator_id,
+        "full_name": f"{first_name} {last_name}",
+        "warnings": 0,
+        "banned_until": None
+    })
+
+    with open(violators_f, "w", encoding="utf-8") as f:
+        json.dump(violators, f, indent=4)
+
+def compute_ban_duration():
+    now = datetime.now()
+    ban_duration = now + timedelta(hours=2)
+
+    # print(ban_duration.strftime("%Y-%m-%d %H:%M:%S"))
+    return ban_duration
+
+def check_warnings(user_id):
+    violators = get_violators_log()
+
+    for vltr in violators["violators"]:
+        if vltr["id"] == user_id and vltr["warnings"] > 1:
+            # Reset warnings
+            vltr["warnings"] = 0
+            with open(violators_f, "w", encoding="utf-8") as f:
+                json.dump(violators, f, indent=4)
+
+            # Return True to indicate mute should happen
+            return True
+
+    # Not enough warnings
+    return False
+
+    
+    # print(violators["violators"])
+    # for key, val in violators.items():
+    #     print(val)
+    # pass
+
+def get_violators_log():
+    with open(violators_f, "r", encoding="utf-8") as v_f:
+        violators = json.load(v_f)
+
+    # print("get violators log: ", violators)
+
+    # check_warnings(violators)
+    return violators
+
+def update_violator(id):
+    log = get_violators_log()
+
+    for vltr in log["violators"]:
+        if vltr["id"] == id:
+            vltr["warnings"] += 1
+            break
+    
+    with open(violators_f, "w", encoding="utf-8") as updated_log_f:
+        json.dump(log, updated_log_f, indent = 4)
+    # pass
+
+# def get_users_log():
+#     with open("./hate_speech/datasets/users.json", "r", encoding="utf-8") as users_f:
+#         users = json.load(users_f)
+
+    # print("get users log: ", users)
+
+    # check_users(users)
+    # return users
+
+def log_user():
+    pass
+
+def reply_message(rcved_mssg, user):
+    tknz = tokenize(rcved_mssg)
+    print(f"Tokens: {tknz}")
+
+    violators = get_violators_log()
+
+    if any(token in bw for token in tknz):
+        if not check_violator_exists(user.id, violators):
+            add_violator(user.id, user.first_name, user.last_name)
+        else:
+            update_violator(user.id)
+
+        return f"⚠️ Warning: {user.full_name}"
+    
+    return None
+
+def get_bad_words():
+    global bw
+
+    # if bw is None:
+    #     bw = get_bad_words()
+
+    print("get_bad_words")
+    with open(bad_words_f, "r", encoding="utf-8") as f:
+        bw = json.load(f)
+
+    return bw
+
+def normalize(text):
+    text = text.lower()
+    text = re.sub(r"\W", '', text)
+    text = re.sub(r"\s+", '', text)
+    return text
+
+def tokenize(text, special_tokens = True):
+    # TODO: exclude multi-word
+    # tokens = re.split('[—\-\s\']', text)
+    tokens = re.split(r"[—\-\s']", text)
+
+    tokens = list(map(normalize, tokens))
+
+    # This one is optional, depending on your use case
+    # if special_tokens:
+    #     tokens = ["<s>"] + list(map(normalize, tokens)) + ["</s>"]
+    return tokens
+
+# if __name__ == "__main__":
+#     # m = main("bastard", "sample_violator")
+#     # print(m)
+
+#     # get_violators_log()
+
+#     # check_warnings()
+    
+#     compute_ban_duration()
 
 
 if __name__ == "__main__":
