@@ -1,4 +1,5 @@
 # from ngrams import *
+import os
 from typing import Final
 from datetime import datetime, timedelta, timezone
 import asyncio
@@ -11,19 +12,9 @@ import re
 from datetime import datetime, timedelta
 # from main import *
 
-
-# Here po yung flow
-# sa COMMANDS, bali commands sa tgbot na pwede i-setup sa tg
-# kapag ni run ang code, mag wait na si tg bot for responses sa tg
-# and kapag nag message na sa tg, papasok muna sa function na handle_message
-# then mag reply na si bot using the handle_response na function
-
-# NOTE: (NO NEED TO WORRY NAMAN SA NAKA NOTE PERO NAG INCLUDE AKO JUST IN CASE NA MAG ASK U) 
-# kaya may logic na mag check if sa GC or in private nag message ang user
-# kasi sa private, every message mag reply si bot pero kapag nasa gc siya, that
-# means na mag reply siya sa users. kaya need lang i-mention si bot sa gc tsaka
-# lang mag reply. Included kasi ang logic na 'to sa YT tutorial so ni add ko na rin
-# YT LINK: https://www.youtube.com/watch?v=vZtm1wuA2yc
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+violators_f = os.path.join(BASE_DIR, 'datasets', 'violators.json')
+bad_words_f = os.path.join(BASE_DIR, 'datasets', 'bad_words.json')
 
 TOKEN: Final = '8558133241:AAG-fVtqsubFZYQVNbmPaEItNZjmpBNzY8I'
 BOT_USERNAME: Final = '@HateSpeechDTCTR_bot'
@@ -157,7 +148,7 @@ def add_violator(violator_id, first_name, last_name):
         "banned_until": None
     })
 
-    with open("./hate_speech/datasets/violators.json", "w", encoding="utf-8") as f:
+    with open(violators_f, "w", encoding="utf-8") as f:
         json.dump(violators, f, indent=4)
 
 def compute_ban_duration():
@@ -174,7 +165,7 @@ def check_warnings(user_id):
         if vltr["id"] == user_id and vltr["warnings"] > 1:
             # Reset warnings
             vltr["warnings"] = 0
-            with open("./hate_speech/datasets/violators.json", "w", encoding="utf-8") as f:
+            with open(violators_f, "w", encoding="utf-8") as f:
                 json.dump(violators, f, indent=4)
 
             # Return True to indicate mute should happen
@@ -190,7 +181,7 @@ def check_warnings(user_id):
     # pass
 
 def get_violators_log():
-    with open("./hate_speech/datasets/violators.json", "r", encoding="utf-8") as violators_f:
+    with open(violators_f, "r", encoding="utf-8") as violators_f:
         violators = json.load(violators_f)
 
     # print("get violators log: ", violators)
@@ -206,18 +197,18 @@ def update_violator(id):
             vltr["warnings"] += 1
             break
     
-    with open("./hate_speech/datasets/violators.json", "w", encoding="utf-8") as updated_log_f:
+    with open(violators_f, "w", encoding="utf-8") as updated_log_f:
         json.dump(log, updated_log_f, indent = 4)
     # pass
 
-def get_users_log():
-    with open("./hate_speech/datasets/users.json", "r", encoding="utf-8") as users_f:
-        users = json.load(users_f)
+# def get_users_log():
+#     with open("./hate_speech/datasets/users.json", "r", encoding="utf-8") as users_f:
+#         users = json.load(users_f)
 
     # print("get users log: ", users)
 
     # check_users(users)
-    return users
+    # return users
 
 def log_user():
     pass
@@ -245,7 +236,7 @@ def get_bad_words():
     #     bw = get_bad_words()
 
     print("get_bad_words")
-    with open("./hate_speech/datasets/bad_words.json", "r", encoding="utf-8") as f:
+    with open(bad_words_f, "r", encoding="utf-8") as f:
         bw = json.load(f)
 
     return bw
