@@ -161,9 +161,30 @@ async def check(ctx, *, input_text: str = None):
         #     )
 
         if prediction_class.lower() == "real":
-            msg = f"✅ REYAL: {roun_confidence}% confidence \n \n ============================================== \n 🟢VERIFIED, but it’s good to stay cautious, fact-check on this websites when possible\n \n {rec_text}"
-        else: 
-            msg = f"⚠️ FAKEH: {roun_confidence}% confidence \n \n ============================================== \n📌 This info seems unreliable. Cross-check here:\n \n {rec_text}"
+            msg = (
+                "```diff\n"
+                "+✅ REAL\n"
+                f"+Confidence: {roun_confidence}%\n"
+                "------------------------------\n"
+                "🟢 VERIFIED\n \n"
+                "Stay cautious and fact-check when possible.\n \n"
+               
+                f"{rec_text}\n"
+                "```"
+            )
+        else:
+            msg = (
+                "```diff\n"
+                "- ⚠️ FAKE\n"
+                f"- Confidence: {roun_confidence}%\n"
+                "------------------------------\n"
+                "📌 UNRELIABLE INFORMATION\n \n"
+                "Please cross-check from trusted sources.\n \n"
+             
+                f"{rec_text}\n"
+                "```"
+            )
+
 
         await target_message.reply(msg, mention_author= True)
 

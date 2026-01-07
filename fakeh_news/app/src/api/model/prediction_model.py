@@ -142,10 +142,10 @@ class PredictionModel:
         
         recommendations = []
         
-        if label_name == "Fake":
-            recommendations = self.recommend_sources(text)
+        
+        recommendations = self.recommend_sources(text)
             
-            print(recommendations)
+            # print(recommendations)
             
         
         

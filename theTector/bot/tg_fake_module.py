@@ -55,8 +55,29 @@ async def run_fakeh_module(text: str):
     confidence = round(confidence, 2)
 
     if prediction.lower() == "real":
-        return f"✅ REAL news ({confidence}%)\n \n ============================================== \n 🟢VERIFIED, but it’s good to stay cautious, fact-check on this websites when possible\n \n {rec_text}"
+        return (
+            "\n"
+            "✅ REAL NEWS\n"
+            f"Confidence: {confidence}%\n"
+            "-------------------------\n \n"
+            "🟢 VERIFIED\n"
+            "Stay cautious and fact-check when possible.\n \n"
+          
+            f"{rec_text}\n"
+           
+        )
+
     elif prediction.lower() == "fake":
-        return f"⚠️FAKE news ({confidence}%)\n \n ============================================== \n📌 This info seems unreliable. Cross-check here:\n \n {rec_text}"
+        return (
+            "\n"
+            "⚠️ FAKE NEWS\n"
+            f"Confidence: {confidence}%\n"
+            "-------------------------\n"
+            "📌 UNRELIABLE INFORMATION\n \n"
+            "Please cross-check from trusted sources.\n \n"
+          
+            f"{rec_text}\n"
+            
+        )
     else:
         return "⚠️ Unable to determine authenticity"
