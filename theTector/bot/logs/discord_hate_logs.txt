@@ -70,3 +70,107 @@ ID: 1458162938295877703
 📝 Analysis:
 🔇 colee_flower coleeflower has been muted for 2 hours.
 ----------------------------------------
+ID: 1458381851411353693
+👤 Author: colee_flower (ID: 1305376241867821219)
+📍 Channel: general
+📝 Message: fuck
+📌 Reason: Detected
+📝 Analysis:
+🔇 colee_flower coleeflower has been muted for 2 hours.
+----------------------------------------
+ID: 1458382430921556150
+👤 Author: colee_flower (ID: 1305376241867821219)
+📍 Channel: general
+📝 Message: fuck
+📌 Reason: Detected
+📝 Analysis:
+🔇 colee_flower coleeflower has been muted for 2 hours.
+----------------------------------------
+ID: 1458382686648406109
+👤 Author: asheemoon (ID: 920490478930104330)
+📍 Channel: general
+📝 Message: fuck
+📌 Reason: Detected
+📝 Analysis:
+⚠️ Warning 1/3: asheemoon Ashee Moon
+----------------------------------------
+ID: 1458382723843494061
+👤 Author: asheemoon (ID: 920490478930104330)
+📍 Channel: general
+📝 Message: fucker
+📌 Reason: Detected
+📝 Analysis:
+⚠️ Warning 2/3: asheemoon Ashee Moon
+----------------------------------------
+ID: 1458382981499457547
+👤 Author: asheemoon (ID: 920490478930104330)
+📍 Channel: general
+📝 Message: fuck
+📌 Reason: Detected
+📝 Analysis:
+🔇 asheemoon Ashee Moon has been muted for 2 hours.
+----------------------------------------
+ID: 1458383015213535252
+👤 Author: asheemoon (ID: 920490478930104330)
+📍 Channel: general
+📝 Message: fuck
+📌 Reason: Detected
+📝 Analysis:
+🔇 asheemoon Ashee Moon has been muted for 2 hours.
+----------------------------------------
+ID: 1458383036327657573
+👤 Author: asheemoon (ID: 920490478930104330)
+📍 Channel: general
+📝 Message: fuck
+📌 Reason: Detected
+📝 Analysis:
+🔇 asheemoon Ashee Moon has been muted for 2 hours.
+----------------------------------------
+ID: 1458383074034323603
+👤 Author: asheemoon (ID: 920490478930104330)
+📍 Channel: general
+📝 Message: fuck
+📌 Reason: Detected
+📝 Analysis:
+🔇 asheemoon Ashee Moon has been muted for 2 hours.
+----------------------------------------
+ID: 1458383307531358238
+👤 Author: asheemoon (ID: 920490478930104330)
+📍 Channel: general
+📝 Message: anyway, sana successful kasi dami kong mali huhuhu
+📌 Reason: Detected
+📝 Analysis:
+🔇 asheemoon Ashee Moon has been muted for 2 hours.
+----------------------------------------
+ID: 1458383704853446666
+👤 Author: colee_flower (ID: 1305376241867821219)
+📍 Channel: general
+📝 Message: fuck
+📌 Reason: Detected
+📝 Analysis:
+🔇 colee_flower coleeflower has been muted for 2 hours.
+----------------------------------------
+ID: 1458383874320240682
+👤 Author: asheemoon (ID: 920490478930104330)
+📍 Channel: general
+📝 Message: yessssx
+📌 Reason: Detected
+📝 Analysis:
+🔇 asheemoon Ashee Moon has been muted for 2 hours.
+----------------------------------------
+ID: 1458383904443470032
+👤 Author: colee_flower (ID: 1305376241867821219)
+📍 Channel: general
+📝 Message: nasend ko na kay geri
+📌 Reason: Detected
+📝 Analysis:
+🔇 colee_flower coleeflower has been muted for 2 hours.
+----------------------------------------
+ID: 1458383919765524574
+👤 Author: asheemoon (ID: 920490478930104330)
+📍 Channel: general
+📝 Message: mali yung ginamit kong measuring cup T.T
+📌 Reason: Detected
+📝 Analysis:
+🔇 asheemoon Ashee Moon has been muted for 2 hours.
+----------------------------------------
