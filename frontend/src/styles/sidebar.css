@@ -9,98 +9,57 @@
   gap: 12px;
   align-content: center;
   margin-left: 10rem;
-  /* border-radius: 30px; */
   height: 50%;
   width: 30%;
   gap: 50px; 
-  /* padding-left: 0rem; */
 }
 
-.spam-btn {
+.spam-btn, .fake-btn, .hate-btn {
   font-family: 'Press Start 2P', monospace;
-  background: #c1662b;
   border: 3px solid #2a1e1e;
   padding: 10px 8px;
-  color: #ECE6C2;               
+  color: #ECE6C2;
   cursor: pointer;
   font-size: 12px;
   margin-bottom: 12px;
-  text-shadow: 1px 1px 0 #000; 
+  text-shadow: 1px 1px 0 #000;
   height: 70px;
-  display: flex;              
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  border-radius: 10px;      
-  }
-
-.fake-btn {
-  font-family: 'Press Start 2P', monospace;
-  background: #065f46;
-  border: 3px solid #2a1e1e;
-  padding: 10px 8px;
-  color: #ECE6C2;               
-  cursor: pointer;
-  font-size: 12px;
-  margin-bottom: 12px;
-  text-shadow: 1px 1px 0 #000; 
-  height: 70px;
-  display: flex;              
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  border-radius: 10px;      
-  }
-
-.hate-btn {
-  font-family: 'Press Start 2P', monospace;
-  background: #D2A24C;
-  border: 3px solid #2a1e1e;
-  padding: 10px 8px;
-  color: #ECE6C2;               
-  cursor: pointer;
-  font-size: 12px;
-  margin-bottom: 12px;
-  text-shadow: 1px 1px 0 #000; 
-  height: 70px;
-  display: flex;              
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  border-radius: 10px;      
-  }
-
-/* 
-.sidebar button {
-  font-family: 'Press Start 2P', monospace;
-  background: #c1662b;
-  border: 3px solid #2a1e1e;
-  padding: 10px 8px;
-  color: #ECE6C2;               
-  cursor: pointer;
-  font-size: 12px;
-  margin-bottom: 12px;
-  text-shadow: 1px 1px 0 #000; 
-  height: 70px;
-  display: flex;              
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  border-radius: 10px;      
-} */
-
-.hate-btn:hover {
-  background: #eec77e;
+  border-radius: 10px;
+  transition: transform 0.1s, box-shadow 0.1s, background 0.2s;
+   transform: translateY(-1px); box-shadow: 4px 4px 0 #2a1e1e;
 }
 
-.fake-btn:hover {
-  background: #0b7a5c;
-}
+.spam-btn { background: #c1662b; }
+.fake-btn { background: #065f46; }
+.hate-btn { background: #D2A24C; }
 
-.spam-btn:hover {
-  background: #e07a2f;
-}
+.spam-btn:hover:not(.active) { background: #e07a2f; }
+.fake-btn:hover:not(.active) { background: #0b7a5c; }
+.hate-btn:hover:not(.active) { background: #eec77e; }
 
-.spam-btn, .fake-btn, .hate-btn:active {
+.sidebar button.active.spam-btn {
   transform: translateY(2px);
+  box-shadow: inset 2px 2px 0 #2a1e1e;
+  background: linear-gradient(145deg, #a34d2b, #c1662b);
+}
+
+.sidebar button.active.fake-btn {
+  transform: translateY(2px);
+  box-shadow: inset 2px 2px 0 #2a1e1e;
+  background: linear-gradient(145deg, #043c2d, #065f46);
+}
+
+.sidebar button.active.hate-btn {
+  transform: translateY(2px);
+  box-shadow: inset 2px 2px 0 #2a1e1e;
+  background: linear-gradient(145deg, #9b7d3b, #D2A24C);
+}
+
+.spam-btn:active, .fake-btn:active, .hate-btn:active {
+  transform: translateY(2px);
+  box-shadow: inset 2px 2px 0 #2a1e1e;
 }
