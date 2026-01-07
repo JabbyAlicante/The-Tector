@@ -39,6 +39,9 @@
   font-size: 14px;
   cursor: pointer;
   text-shadow: 1px 1px 0 #000;
+  align-items: center;
+  justify-content: center;
+   transform: translateY(-1px); box-shadow: 4px 4px 0 #2a1e1e;
 }
 
 .detect-btn:hover {
@@ -138,4 +141,78 @@
 .integration-btn i {
   font-size: 18px; 
 }
+.badwords-instructions {
+  background: #cfe9dd;
+  border: 3px solid #2a1e1e;
+  padding: 20px;
+  margin-top: 20px;
+  font-family: monospace;
+  font-size: 16px;
+  line-height: 1.6;
+  max-height: 500px;
+  height: 380px;
+  overflow-y: auto;
+  position: relative; 
+}
 
+.badwords-instructions ol {
+  padding-left: 20px;
+}
+
+.badwords-instructions li {
+  margin-bottom: 10px;
+}
+
+.badwords-instructions p {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #065f46;
+}
+
+.badwords-instructions h3 {
+  margin-bottom: 10px;
+  color: #2a1e1e;
+}
+
+.instruction-navigation {
+  position: absolute; 
+  bottom: 15px;
+  right: 15px;
+  display: flex;
+  gap: 8px; 
+}
+
+.next-btn, .prev-btn {
+  width: 35px;
+  height: 30px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 16px;
+  color: #fff;
+  background: linear-gradient(145deg, #c1662b, #a34d2b);
+  border: 3px solid #2a1e1e;
+  box-shadow: 3px 3px 0 #2a1e1e;
+  cursor: pointer;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s, box-shadow 0.1s, background 0.2s;
+}
+
+.next-btn:hover, .prev-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 4px 4px 0 #2a1e1e;
+  background: linear-gradient(145deg, #e07a2f, #c1662b);
+}
+
+.next-btn:active, .prev-btn:active {
+  transform: translateY(1px);
+  box-shadow: 2px 2px 0 #2a1e1e;
+}
+
+.next-btn:disabled, .prev-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: 1px 1px 0 #2a1e1e;
+  background: #8b4d2b;
+}
