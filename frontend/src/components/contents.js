@@ -42,7 +42,30 @@ export default function contents(root) {
             <li>Invite the bot using the Discord integration link.</li>
             <li>Make sure the bot has proper permissions.</li>
           </ol>
+
           <p><em>Note: Only admins can manage the bot permissions.</em></p>
+
+          <h4>What the Bot Does</h4>
+          <ul>
+            <li>Automatically scans messages</li>
+            <li>Detects profanity, hate speech, slurs, and violent language</li>
+            <li>Removes violating messages instantly</li>
+          </ul>
+
+          <h4>If You Break the Rules</h4>
+          <ul>
+            <li>Your message will be deleted</li>
+            <li>You’ll receive a warning in the channel</li>
+            <li>Repeated violations result in a timeout or mute</li>
+            <li>Severe or repeated hate speech may lead to a ban</li>
+          </ul>
+
+          <h4>Muted Users</h4>
+          <ul>
+            <li>Cannot send messages</li>
+            <li>Mutes expire automatically</li>
+          </ul>
+
         </div>
         <div class="instruction-navigation">
           <button id="prevBtn" class="prev-btn">&lt;</button>

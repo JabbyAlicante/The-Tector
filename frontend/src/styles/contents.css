@@ -141,6 +141,10 @@
 .integration-btn i {
   font-size: 18px; 
 }
+
+#instructionPage0{
+  margin-bottom: 50px;
+}
 .badwords-instructions {
   background: #cfe9dd;
   border: 3px solid #2a1e1e;
@@ -153,6 +157,7 @@
   height: 380px;
   overflow-y: auto;
   position: relative; 
+  padding-bottom: 10px;
 }
 
 .badwords-instructions ol {
@@ -175,12 +180,15 @@
 }
 
 .instruction-navigation {
-  position: absolute; 
-  bottom: 15px;
-  right: 15px;
+  position: sticky;
+  bottom: 10px;
   display: flex;
-  gap: 8px; 
+  justify-content: flex-end;
+  gap: 8px;
+  /* background: #cfe9dd; */
+  padding-top: 10px;
 }
+
 
 .next-btn, .prev-btn {
   width: 35px;
