@@ -1,6 +1,7 @@
 import json
 import re
 from datetime import datetime, timedelta
+
 # import tokenize
 # from hate_speech.bots.tgbot import *
 
@@ -54,7 +55,7 @@ def normalize_word(word):
 
 
 
-def create_speak_pattern(word):
+def create_pattern(word):
     leet_map = {
         'a': '[a@4]',
         'e': '[e3]',
@@ -68,35 +69,11 @@ def create_speak_pattern(word):
         'z': '[z2]'
     }
 
-
-    pattern = ''
-    for char in word.lower():
-        if char in leet_map:
-            pattern += leet_map[char]
-        else:
-            pattern += char
-    
-    return pattern
-
-
-def create_pattern(word):
     pattern = ''
 
-    for i, char in enumerate(word.lower()):
-        if char in 'aeiostz':
-            leet_map = {
-                'a': '[a@4]', 'e': '[e3]', 'i': '[i1!|]',
-                'o': '[o0]', 's': '[s5$]', 't': '[t7+]', 'z': '[z2]'
-            }
+    for char in word:
+        pattern += leet_map.get(char, char) + r"[\*\.\-_\s]{0,2}"
 
-            # pattern += leet_map.get(char, char)
-            pattern += leet_map.get(char, char) + '+'
-
-        else:
-            pattern += char
-
-
-        pattern += r'[\*\.\-_\s]{0,2}'
 
         # if i < len(word) - 1:
         #     pattern += r'+' 
@@ -115,16 +92,16 @@ def pattern_matching(text, word_list):
         if not word:
             continue
 
-        pattern = create_pattern(word)
-        pattern = rf'\b{pattern}\b'
+        # pattern = create_pattern(word)
+        # pattern = rf'\b{pattern}\b'
 
 
         # if re.search(pattern, text_lower):
-        #     matches.append(word)
+          #     matches.append(word)
 
         # Identifying regex error
         try:
-            if re.search(pattern, text_lower):
+            if re.search(rf"\b{create_pattern(word)}\b", text_lower):
                 matches.append(word)
 
         except re.error as e:
@@ -134,253 +111,165 @@ def pattern_matching(text, word_list):
             # print("Error:", e)
             # raise
             print(f"SKIPPED INVALID WORD: {raw_word} -> {pattern}")
+            continue
 
     return list(set(matches))
 
 
 
-def match_custom_pattern(text, patterns):
+def check_profanity(text):
+    data = load_badwords()
+    matches = pattern_matching(text, data.get("words", []))
+    
+    
+    # simple_words = bad_words_data.get("words", [])
+    # custom_patterns = bad_words_data.get("patterns", [])
+    
+    # simple_matches = pattern_matching(text, simple_words)
+    
+    # pattern_matches = match_custom_pattern(text, custom_patterns)
 
-    text_lower = text.lower()
+    
+    return {
+        "detected": bool(matches), 
+        "matched_words": matches
+    }
+
+
+
+def check_slurs(text):
+    
+    slurs_data = load_slurs()
     matches = []
 
-    for pattern_data in patterns:
-        if isinstance(pattern_data, dict):
-            pattern = pattern_data.get("pattern")
-            word = pattern_data.get("word")
-        else:
-            
-            pattern = pattern_data
-            word = pattern_data
-        
-        try:
-            if re.search(pattern, text_lower):
-                matches.append({"word": word, "pattern": pattern})
-        except re.error:
-            
-            continue
+    # text_lower = text.lower() 
     
-    return matches
-
-
-def tokenize(text):
-    tokens = re.split(r"[—\-\s']", text)
-    return [normalize(t) for t in tokens if t]
-
-
-def check_profanity(text):
-    bad_words_data = load_badwords()
+    # for category, slur_info in slurs_data.items():
+    #     words = slur_info.get("words", [])
+    #     patterns = slur_info.get("patterns", [])
     
-    simple_words = bad_words_data.get("words", [])
-    custom_patterns = bad_words_data.get("patterns", [])
+    for category, info in slurs_data.items():
+        words = info.get("words", [])
+        matches += pattern_matching(text, words)
     
-    simple_matches = pattern_matching(text, simple_words)
-    
-    pattern_matches = match_custom_pattern(text, custom_patterns)
-    
-    # all_matches = simple_matches + [m["word"] for m in pattern_matches]
-    all_matches = list(set(simple_matches + [m["word"] for m in pattern_matches]))
-
-
     return {
-        "detected": len(all_matches) > 0,
-        "matched_words": all_matches,
-        "type": "profanity"
+        "detected": bool(matches), 
+        "matches": matches
     }
 
 
-# --------------------- HATE SPEECH DETECTION
-def check_slurs(text):
-    slurs_data = load_slurs()
-    text_lower = text.lower()
-    matched = []
-    
-    for category, slur_info in slurs_data.items():
-        words = slur_info.get("words", [])
-        patterns = slur_info.get("patterns", [])
-        
-        word_matches = pattern_matching(text, words)
-        for word in word_matches:
-            matched.append({"slur": word, "category": category})
-        
-        pattern_matches = match_custom_pattern(text, patterns)
-        for match in pattern_matches:
-            matched.append({"slur": match["word"], "category": category})
-    
-    return {
-        "detected": len(matched) > 0,
-        "matches": matched
-    }
 
 
 def check_group_dehumanization(text):
-    group_identifiers = load_group_identifiers()
-    dehumanizing_data = load_dehumanizing_terms()
+    groups = load_group_identifiers()
+    dehumanizing = load_dehumanizing_terms()
+   
     text_lower = text.lower()
+    targets = []
     
-    groups = []
-    dehumanizing = []
+    for cat, identifiers in groups.items():
+
+    # for category, identifiers in group_identifiers.items():
+    #     for identifier in identifiers:
+    #         if re.search(rf"\b{re.escape(identifier)}\b", text_lower):
+    #             groups.append(category)
+
+        for w in identifiers:            
+            if re.search(rf"\b{re.escape(w)}\b", text_lower):
+                
+                targets.append(cat)
     
-    for category, identifiers in group_identifiers.items():
-        for identifier in identifiers:
-            if re.search(rf"\b{re.escape(identifier)}\b", text_lower):
-                groups.append(category)
     
-    
-    words = dehumanizing_data.get("words", [])
-    patterns = dehumanizing_data.get("patterns", [])
-    
-    
-    word_matches = pattern_matching(text, words)
-    dehumanizing.extend(word_matches)
-    
-    # Check patterns
-    pattern_matches = match_custom_pattern(text, patterns)
-    dehumanizing.extend([m["word"] for m in pattern_matches])
-    
-    detected = len(groups) > 0 and len(dehumanizing) > 0
+    dehumanizing_matches = pattern_matching(text, dehumanizing.get("words", []))
+    detected = bool(targets) and bool(dehumanizing_matches)
     
     return {
-        "detected": detected,
-        "groups": groups,
-        "dehumanizing_terms": dehumanizing
+        "detected": detected, 
+        "groups": targets, 
+        "dehumanizing_terms": dehumanizing_matches
     }
 
 
-def check_group_violence(text):
-    group_identifiers = load_group_identifiers()
+
+def check_violence(text):
+    groups = load_group_identifiers()
     violence_patterns = load_violence_patterns()
     text_lower = text.lower()
     
-    groups = []
-    violence = []
-    
-    
-    for category, identifiers in group_identifiers.items():
-        for identifier in identifiers:
-    
-            # if identifier in text_lower:
-            if re.search(rf"\b{re.escape(identifier)}\b", text_lower):
-                groups.append(category)
-    
-    # Look for violenve patterns
+    targets = []
+    found_violence = []
+
+    for cat, identifiers in groups.items():
+        for w in identifiers:
+            if re.search(rf"\b{re.escape(w)}\b", text_lower):
+                targets.append(cat)
+
+   
     for pattern in violence_patterns:
-        if pattern in text_lower:
-            violence.append(pattern)
-    
-    detected = len(groups) > 0 and len(violence) > 0
-    
+        if re.search(pattern, text_lower):
+            found_violence.append(pattern)
+
+    detected = bool(targets) and bool(found_violence)
     return {
-        "detected": detected,
-        "groups": groups,
-        "violence_patterns": violence
+        "detected": detected, 
+        "groups": targets, 
+        "patterns": found_violence
     }
 
 
 def check_hate_phrases(text):
-
-    hate_phrases = load_hate_phrases()
-    text_lower = text.lower()
+    phrases = load_hate_phrases()
+    matched = [p for p in phrases if p.lower() in text.lower()]
     
-    matched = [phrase for phrase in hate_phrases if phrase in text_lower]
     
     return {
-        "detected": len(matched) > 0,
+        "detected": bool(matched), 
         "matches": matched
     }
 
-
-def identify_target_groups(text):
-
-    group_identifiers = load_group_identifiers()
-    text_lower = text.lower()
-    targets = []
-    
-    for category, identifiers in group_identifiers.items():
-        for identifier in identifiers:
-
-            # if identifier in text_lower:
-            if re.search(rf"\b{re.escape(identifier)}\b", text_lower):
-                targets.append(category)
-                break
-    
-    return list(set(targets))
-
-
 def check_hate_speech(text):
-    # Detecting matches for any type of hate speech    
-    slur_matches = check_slurs(text)
-    
-    group_dehumanization = check_group_dehumanization(text)
-    
-    group_violence = check_group_violence(text)
-    
-    phrase_matches = check_hate_phrases(text)
+    slurs = check_slurs(text)
+    dehumanization = check_group_dehumanization(text)
+    violence = check_violence(text)
+    phrases = check_hate_phrases(text)
     
     detected = any([
-        slur_matches["detected"],
-        group_dehumanization["detected"],
-        group_violence["detected"],
-        phrase_matches["detected"]
+        slurs["detected"], 
+        dehumanization["detected"], 
+        violence["detected"], 
+        phrases["detected"]
     ])
+
+
     
+    targets = list(set(dehumanization["groups"] + violence["groups"]))
     return {
         "detected": detected,
-        "type": "hate_speech",
         "signals": {
-            "slurs": slur_matches,
-            "group_dehumanization": group_dehumanization,
-            "group_violence": group_violence,
-            "hate_phrases": phrase_matches
+            "slurs": slurs,
+            "dehumanization": dehumanization,
+            "violence": violence,
+            "hate_phrases": phrases
         },
-        "target_groups": identify_target_groups(text)
+        "target_groups": targets
     }
 
-
-# ---------------------------- CONTENT ANALYSIS
-def calculate_severity(profanity_result, hate_speech_result):
-    
-    if hate_speech_result["detected"]:
-        return "CRITICAL"  
-        # Hate speech is most severe
-    elif profanity_result["detected"]:
-        return "WARNING"   
-        # Bad words are less severe | 
-    return "CLEAN"
-
-def get_violation_types(analysis):
-    violations = []
-
-    if analysis["profanity"]["detected"]:
-        violations.append("profanity")
-
-    hate = analysis["hate_speech"]
-
-    if hate["detected"]:
-        if hate["signals"]["slurs"]["detected"]:
-            violations.append("hate_speech:slur")
-
-        if hate["signals"]["group_dehumanization"]["detected"]:
-            violations.append("hate_speech:dehumanization")
-
-        if hate["signals"]["group_violence"]["detected"]:
-            violations.append("hate_speech:violence")
-
-        if hate["signals"]["hate_phrases"]["detected"]:
-            violations.append("hate_speech:phrase")
-
-    return violations
-
+   
 
 def analyze_content(text):
+    profanity = check_profanity(text)
+    hate = check_hate_speech(text)
 
-    profanity_result = check_profanity(text)
-    hate_speech_result = check_hate_speech(text)
-    
+    severity = (
+        "CRITICAL" if hate["detected"]
+        else "WARNING" if profanity["detected"]
+        else "CLEAN"
+    )
+
     return {
-        "profanity": profanity_result,
-        "hate_speech": hate_speech_result,
-        "severity": calculate_severity(profanity_result, hate_speech_result)
+        "severity": severity,
+        "profanity": profanity,
+        "hate_speech": hate
     }
 
 
@@ -388,154 +277,121 @@ def analyze_content(text):
 
 def get_violators_log():
 
-    with open("../../hate_speech/datasets/violators.json", "r", encoding="utf-8") as f:
+    with open("./hate_speech/datasets/violators.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
 
 def save_violators(violators):
 
-    with open("../../hate_speech/datasets/violators.json", "w", encoding="utf-8") as f:
+    with open("./hate_speech/datasets/violators.json", "w", encoding="utf-8") as f:
         json.dump(violators, f, indent=4)
 
 
-def check_violator_exists(user_id, violators):
-
-    return any(v["id"] == user_id for v in violators["violators"])
-
-
-def add_violator(user_id, first_name, last_name, violation_type):
-
+def handle_violation(user, violation_type, severity):
     violators = get_violators_log()
+    entry = next((v for v in violators["violators"] if v["id"] == user.id), None)
+
+    now = datetime.utcnow()
+
+    if entry and entry.get("muted_until"):
+        muted_until = datetime.fromisoformat(entry["muted_until"])
+        
+        if now >= muted_until:
+            entry["warnings"] = 0
+            entry["muted_until"] = None
+
+    if not entry:
+        entry = {
+            "id": user.id,
+            "name": user.full_name,
+            "warnings": 0,
+            "violations": [],
+            "muted_until": None
+        }
+
+        violators["violators"].append(entry)
+
+    entry["warnings"] += 1
+    entry["violations"].append(violation_type)
     
-    violators["violators"].append({
-        "id": user_id,
-        "full_name": f"{first_name} {last_name}",
-        "warnings": 1,
-        "violations": [violation_type],
-        "banned_until": None
-    })
-    
-    save_violators(violators)
+    # save_violators(violators)
+    action_result = {
+        "action": "warn",
+        "warnings": entry["warnings"]
+    }
 
 
-def update_violator(user_id, violation_type):
+    if severity == "CRITICAL":
+        if entry["warnings"] >= 1:
+            # return {"action": "ban", "duration": timedelta(days=7)}
+            
+            return {
+                "action": "kick"
+                # "duration": timedelta(minutes=1)
+            }
 
-    violators = get_violators_log()
-    warnings = 0
-    
-    for vltr in violators["violators"]:
-        if vltr["id"] == user_id:
-            vltr["warnings"] += 1
-            vltr["violations"].append(violation_type)
-            warnings = vltr["warnings"]
-            break
-    
-    save_violators(violators)
-    return warnings
-
-
-def handle_violation(user_id, first_name, last_name, violation_type, severity):
-
-    violators = get_violators_log()
-    
-
-    if not check_violator_exists(user_id, violators):
-        add_violator(user_id, first_name, last_name, violation_type)
-        return {"action": "warn", "warnings": 1}
-    
-
-    warnings = update_violator(user_id, violation_type)
-    
-
-    if severity == "CRITICAL":  # Hate speech
-        if warnings >= 2:
-            return {"action": "ban", "duration": timedelta(days=7)}
         else:
-            return {"action": "mute", "duration": timedelta(hours=24)}
-    
-    elif severity == "WARNING":  # Bad words
-        if warnings >= 3:
-            return {"action": "mute", "duration": timedelta(hours=2)}
-        else:
-            return {"action": "warn", "warnings": warnings}
-    
-    return {"action": "warn", "warnings": warnings}
+            
+            mute_duration = timedelta(minutes=1)
+            entry["muted_until"] = (now + mute_duration).isoformat()
+            
+            action_result = {
+                "action": "mute",
+                "duration": mute_duration
+            }
 
+        # return {"action": "mute", "duration": timedelta(hours=24)}
+        # return {
+        #     "action": "mute", 
+        #     "duration": timedelta(minutes=1)
+        # }
+    
+
+
+    elif severity == "WARNING" and entry["warnings"] >= 3:
+        # return {"action": "mute", "duration": timedelta(hours=2)}
+        
+        mute_duration = timedelta(minutes=2)
+        entry["muted_until"] = (now + mute_duration).isoformat()
+        
+        action_result = {
+            "action": "mute",
+            "duration": mute_duration
+        }
+
+        # return {
+        #     "action": "mute", 
+        #     "duration": timedelta(minutes=2)
+        # }
+
+
+    # return {
+    #     "action": "warn", 
+    #     "warnings": entry["warnings"]
+    # }
+
+    save_violators(violators)
+    return action_result
 
 # ------------------------------------ MAIN MESSAGE HANDLER
-def reply_message(received_message, user):
-    
-    analysis = analyze_content(received_message)
-    
-    # If none detected
+
+def reply_message(text, user):
+    analysis = analyze_content(text)
+
     if analysis["severity"] == "CLEAN":
-        # return f"✅ {user.full_name}: No violations detected."
-        print(f"Received: {received_message}\nSeverity: CLEAN")
         return None
 
-    lines = [f"Message analyzed for {user.full_name}"]
-    lines.append(f"Severity: {analysis['severity']}")
-    
-    # Violation type
-    # if analysis["hate_speech"]["detected"]:
-       
-    #     target_groups = analysis['hate_speech']['target_groups']
-    #     violation_type = f"hate_speech:{','.join(target_groups)}"
-    
-    # else:
-    #     violation_type = "profanity"
-
-    # if analysis['profanity_matches']:
-    if analysis['profanity']['detected']:
-        lines.append(f"⚠️ Profanity detected: {analysis['profanity']['matched_words']}")
-
-
-    hate = analysis["hate_speech"]
-    if hate["detected"]:
-        lines.append(f"🚫 Hate speech detected!")
-        target_groups = hate.get("target_groups", [])
-        if target_groups:
-            lines.append(f"Target groups: {target_groups}")
-
-        slurs_result = hate["signals"]["slurs"]
-        if slurs_result["detected"]:
-            lines.append(f"Slurs: {slurs_result['matches']}")
-
-    # violation_type = analysis["violation_type"]
-    if hate["detected"]:
-        violation_type = "hate_speech"
-    
-    elif analysis['profanity']['detected']:
-        violation_type = "profanity"
-    
-    else:
-        violation_type = "unknown"
-    
-    # Violation Handling
-
-    action = handle_violation(
-        user.id,
-        user.first_name,
-        user.last_name,
-        violation_type,
-        analysis["severity"]
+    violation_type = (
+        "hate_speech" if analysis["hate_speech"]["detected"] else "profanity"
     )
 
-    
-    # Response
-    # if action["action"] == "ban":
-    #     return f"🚫 {user.first_name} {user.last_name} has been banned for {action['duration'].days} days for hate speech."
-    
-    
-    if action["action"] == "mute":
-        hours = int(action['duration'].total_seconds() / 3600)
-        return f"🔇 {user.full_name} has been muted for {hours} hours."
-    
-    
-    else:
-        return f"⚠️ Warning {action['warnings']}/3: {user.full_name}"
+    action = handle_violation(user, violation_type, analysis["severity"])
 
-    return "\n".join(lines)
+    return {
+        "analysis": analysis,
+        "action": action,
+        "text": f"Severity: {analysis['severity']} | Violation: {violation_type}"
+    }
 
 # ----------------------------------------- TESTING
 
