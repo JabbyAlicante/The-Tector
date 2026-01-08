@@ -1,7 +1,7 @@
 import os
 import sys
 import discord
-
+from discord.utils import utcnow
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../hate_speech")))
 
@@ -10,6 +10,12 @@ from main import reply_message, preload_datasets, get_violators_log, analyze_con
 
 
 LOG_CHANNEL_NAME = "hate-speech-logs"
+
+intents = discord.Intents.default()
+intents.message_content = True
+intents.members = True
+
+client = discord.Client(intents=intents)
 
 LOG_FILE = os.path.join(
     os.path.dirname(__file__),
@@ -49,11 +55,23 @@ def save_hate_message(message, reason="Detected", response_text=None):
             f"📍 Channel: {message.channel}\n"
             f"📝 Message: {message.content}\n"
             f"📌 Reason: {reason}\n"
-            f"📝 Analysis:\n{response_text}\n"
+            # f"📝 Analysis:\n{response_text}\n"
+            f"🛠 Action: {action}\n"
             f"{'-'*40}\n"
         )
 
-async def log_to_channel(message, reason="Live Detection", response_text=None):
+        if response_text:
+            f.write(f"📝 Analysis:\n{response_text}\n")
+
+        if action:
+            # f.write(f"📌 Action: {action['action']}\n")
+            if "duration" in action:
+                f.write(f"⏱ Duration: {action['duration']}\n")
+
+        f.write(f"{'-'*40}\n")
+                
+
+async def log_to_channel(message, reason="Live Detection", response_text=None, action=None):
     if not ENABLE_CHANNEL_LOGS or not message.guild:
         return
 
@@ -68,16 +86,17 @@ async def log_to_channel(message, reason="Live Detection", response_text=None):
             f"📍 Channel: {message.channel.mention}\n"
             f"📝 Message: {message.content}\n"
             f"📌 Reason: {reason}"
+             f"🛠 Action: {action}\n"
         )
 
 # ---------------- DISCORD CLIENT ---------------- #
 
-intents = discord.Intents.default()
-intents.message_content = True
-intents.guilds = True
-intents.messages = True
+# intents = discord.Intents.default()
+# intents.message_content = True
+# intents.guilds = True
+# intents.messages = True
 
-client = discord.Client(intents=intents)
+# client = discord.Client(intents=intents)
 
 @client.event
 async def on_ready():
@@ -88,7 +107,7 @@ async def on_ready():
     # get_badwords()
 
     preload_datasets()
-    users_log = get_violators_log()
+    # users_log = get_violators_log()
 
     print("📚 Hate speech dataset loaded")
 
@@ -98,8 +117,8 @@ async def on_message(message):
     if message.author.bot:
         return
 
-    if message.guild:
-        if message.channel.name == LOG_CHANNEL_NAME:
+    if message.guild and message.channel.name == LOG_CHANNEL_NAME:
+        # if message.channel.name == LOG_CHANNEL_NAME:
             return
 
     if str(message.id) in flagged_message_ids:
@@ -134,30 +153,64 @@ async def on_message(message):
     if response:
         # await log_to_channel(message)
         # save_hate_message(message)
+
+        action_taken = response["action"]["action"]
         
         save_hate_message(message, response_text=response)
         await log_to_channel(message, response_text=response)
 
 
         try:
+            member = message.author 
+            
+            if action_taken == "mute":
+                minutes = int(result["action"]["duration"].total_seconds() / 60)
+                
+                await member.edit(timed_out_until=discord.utils.utcnow() + result["action"]["duration"])
+            
+            elif action_taken == "kick":
+                try:
+                    await message.author.kick(reason="Violation of server rules")
+                    notice += f"\n👢 {user.full_name} has been kicked from the server."
+                except Exception as e:
+                    print("Failed to kick:", e)
+            # await message.delete()
+        except discord.Forbidden:
+            print(f"❌ Missing permissions for {member}")
+            
+
+        try:
             await message.delete()
-        except Exception:
+       
+        except discord.Forbidden:
             pass
 
-        analysis = analyze_content(message.content)
-        details = []
+        notice = f"🚫 {user.mention} {result['text']}"
+        
+        if action_taken == "mute":
+            minutes = int(result["action"]["duration"].total_seconds() / 60)
+            notice += f"\n🔇 Muted for {minutes} minutes."
+        
+        
+        elif action_taken == "kick":
+            notice += "\n👢 Kicked from the server!"
 
-        if analysis['profanity']['detected']:
-            details.append(f"⚠️ Profanity detected: {analysis['profanity']['matched_words']}")
+        await message.channel.send(notice)
 
-        if analysis['hate_speech']['detected']:
-            details.append("🚫 Hate speech detected!")
-            details.append(f"Target groups: {analysis['hate_speech']['target_groups']}")
-            details.append(f"Slurs: {analysis['hate_speech']['signals']['slurs']['matches']}")
+        # analysis = analyze_content(message.content)
+        # details = []
+
+        # if analysis['profanity']['detected']:
+        #     details.append(f"⚠️ Profanity detected: {analysis['profanity']['matched_words']}")
+
+        # if analysis['hate_speech']['detected']:
+        #     details.append("🚫 Hate speech detected!")
+        #     details.append(f"Target groups: {analysis['hate_speech']['target_groups']}")
+        #     details.append(f"Slurs: {analysis['hate_speech']['signals']['slurs']['matches']}")
 
 
-        await message.channel.send(
-            f"🚫 {user.mention} {response}"
-        )
+        # await message.channel.send(
+        #     f"🚫 {user.mention} {response}"
+        # )
 
-# client.run(TOKEN)
+client.run(TOKEN)
